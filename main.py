@@ -7,7 +7,7 @@ from BankingSystem.Branch import Branch
 
 #Client1 = Client("John Doe", "00001", "555-1234")
 #Client2 = Client("Toby Maguire", "00002", "555-1235")
-#Account1 = Account(1101, "Savings", 10000)
+Account1 = Account(1101, "Savings", 10000)
 #Account2 = Account(1102, "Savings", 500)
 
 
@@ -22,6 +22,7 @@ from BankingSystem.Branch import Branch
 
 # branch1.open_branch()
 
-
+Account1.__repr__()
+Account1.__str__()
 
 

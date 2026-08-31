@@ -8,3 +8,11 @@ class Account:
         print(f"Account No: {self.acc_number}")
         print(f"Account Type: {self.acc_type}")
         print(f"Account Balance: ${self.balance}")
+
+    def __str__(self):
+        print(f"The account number is {self.acc_number}, and it is a {self.acc_type} account with a balance of ${self.balance}")
+
+    def __repr__(self):
+        print(f"Account No: {self.acc_number}\n" \
+        f"Account Type: {self.acc_type} \n" \
+        f"Account Balance: {self.balance}")
