@@ -23,8 +23,8 @@ class Transaction:
                 f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
             )
 
-    def viewbalance(self, acc_type):
-        print(f"Your {acc_type} account balacne is: ${self.balance}")
+    def viewbalance(self, my_account):
+        print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
 
     def transfering(self, transaction_id, account_a, account_b, t_amount, description, status):
         if account_a.balance < t_amount:
