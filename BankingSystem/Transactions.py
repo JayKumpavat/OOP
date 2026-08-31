@@ -1,5 +1,3 @@
-import Accounts
-
 class Transaction:
     def __init__(self, transaction_id, transaction_type, t_amount, description) -> None:
         self.transaction_id = transaction_id
