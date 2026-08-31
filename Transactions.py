@@ -34,7 +34,7 @@ class Transaction:
             return f"The Transaction was {self.status}"
         else:
             return f"The transaction could not be cancelled as it is {self.status}"
-        
+
 
 
         

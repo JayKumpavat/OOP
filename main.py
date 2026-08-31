@@ -26,5 +26,7 @@ Account2 = Account(1102, "Savings", 500)
 
 
 
-transfering = Transaction(1, Account1, Account2, 500, 'Moving money to savings',)
+transfering = Transaction(1, "money_transfer", 500, "Moving Money to savings")
 transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
+transfering.process()
+
