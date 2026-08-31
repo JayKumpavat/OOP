@@ -1,5 +1,6 @@
 from Transactions import Transaction
-from Client import Client, Account
+from Client import Client
+from Accounts import Account
 
 
 
@@ -26,6 +27,7 @@ Account2 = Account(1102, "Savings", 500)
 
 
 
-transfering = Transaction(1, "money_transfer", 500, "Moving Money to savings")
-transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
+transfering = Transaction(1, "money_transfer", 10000, "Moving Money to savings")
+#transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
+transfering.withdrawl(10000)
 

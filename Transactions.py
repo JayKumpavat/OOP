@@ -1,4 +1,4 @@
-
+import Accounts
 
 class Transaction:
     def __init__(self, transaction_id, transaction_type, t_amount, description) -> None:
@@ -14,11 +14,11 @@ class Transaction:
             f"${deposit_amount} has been added to {acc_type}, new balance: ${self.balance}"
         )
 
-    def withdrawl(self, withdrawl_amount):
-        if self.balance <= withdrawl_amount:
+    def withdrawl(self, my_account, withdrawl_amount):
+        if my_account <= withdrawl_amount:
             print(f"insufficient Balance, Withdrawl Denied")
         else:
-            self.balance -= withdrawl_amount
+            my_account -= withdrawl_amount
             print(
                 f"{withdrawl_amount} has been withdrawn from your account, new balance: ${self.balance}"
             )
