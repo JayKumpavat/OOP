@@ -1,10 +1,10 @@
 class Transaction:
-    def __init__(self, transaction_id, transaction_type, t_amount, description, status='pending') -> None:
+    def __init__(self, transaction_id, transaction_type, t_amount, description) -> None:
         self.transaction_id = transaction_id
         self.transaction_type = transaction_type
         self.t_amount = t_amount
         self.description = description
-        self.status = status
+        self.status = "Pending"
 
     def transfering(self, transaction_id, account_a, account_b, t_amount, description, status):
         if account_a.balance < t_amount:
@@ -20,4 +20,21 @@ class Transaction:
                   f'{account_b.acc_type}: {account_b.balance}\n'
                   f'Transfer Description: {description}\n'
                   f'status: {status}\n')
+
+    def process(self):
+        if self.status == "Pending":
+            self.status = "Completed"
+            return f"Your status is now {self.status}"
+        else:
+            return f"Could not complete status because it is {self.status}"
+
+    def cancelled(self):
+        if self.status == "Pending":
+            self.status = "Cancelled"
+            return f"The Transaction was {self.status}"
+        else:
+            return f"The transaction could not be cancelled as it is {self.status}"
+        
+
+
         
