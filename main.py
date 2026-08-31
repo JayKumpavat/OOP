@@ -18,12 +18,10 @@ transfering.withdrawl(Account1, 1000)
 
 branch1 = Branch("1","branch 1", "Enfield", 419422184)
 branch2 = Branch("2", "branch2", "sailsbury", 592833148)
-print(branch1.b_status)
-print(branch2.b_status)
+
 
 branch1.open_branch()
-print(branch1.b_status)
-print(branch2.b_status)
+
 
 
 
