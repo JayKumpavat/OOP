@@ -20,4 +20,14 @@ class Branch:
         else:
             return f"Branch is {self.b_status}, therefore it cannot be Closed"
 
+    def upd_branch_no(self, new_number: int):
+        if len(str(new_number)) == 10:
+            self.b_phoneno = new_number
+            return f"The Branch phone number is changed to: {self.b_phoneno}"
+        else:
+            return f"Please enter a valid 10 digit phone number"
+
+    def feedback(self, branch_feedback: str):
+        print(f"Feedback: {branch_feedback}")
+        
     
