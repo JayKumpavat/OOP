@@ -30,4 +30,17 @@ class Branch:
     def feedback(self, branch_feedback: str):
         print(f"Feedback: {branch_feedback}")
 
+    def __str__(self):
+        print(f"The branch number is {self.b_number}, and its name is {self.b_name}. Its located in {self.b_suburb}")
+        print(f"its phone number is {self.b_phoneno} and its current status is {self.b_status}")
+
+    def __repr__(self):
+        print(f"Branch Number: {self.b_number}\n\
+              Name: {self.b_name}\n\
+              Location: {self.b_suburb}\n\
+              Phone number: {self.b_phoneno}\n\
+              Current Status: {self.b_status}")
+    
+
+
     

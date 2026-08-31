@@ -18,6 +18,14 @@ class Client:
         self.client_no = new_number
         print("Client number updated to:", self.client_no)
 
+    def __str__(self):
+        print(f"Client's Id is {self.client_id} and client name is {self.client_name} and their phone number is {self.client_no}")
+
+    def __repr__(self):
+        print(f"Client Id: {self.client_id}\n\
+            Client Name: {self.client_name}\n\
+            Client Phone Number: {self.client_no}")
+
 
 
 
