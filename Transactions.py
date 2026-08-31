@@ -8,10 +8,10 @@ class Transaction:
         self.description = description
         self.status = "Pending"
 
-    def deposit(self, deposit_amount, acc_type):
+    def deposit(self, my_account, deposit_amount):
         self.balance += deposit_amount
         print(
-            f"${deposit_amount} has been added to {acc_type}, new balance: ${self.balance}"
+            f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
         )
 
     def withdrawl(self, my_account, withdrawl_amount):
@@ -20,7 +20,7 @@ class Transaction:
         else:
             my_account.balance -= withdrawl_amount
             print(
-                f"{withdrawl_amount} has been withdrawn from your account, new balance: ${self.balance}"
+                f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
             )
 
     def viewbalance(self, acc_type):
