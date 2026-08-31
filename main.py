@@ -29,5 +29,5 @@ Account2 = Account(1102, "Savings", 500)
 
 transfering = Transaction(1, "money_transfer", 10000, "Moving Money to savings")
 #transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
-transfering.withdrawl(10000)
+transfering.withdrawl(Account1, 1000)
 

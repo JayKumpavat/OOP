@@ -15,10 +15,10 @@ class Transaction:
         )
 
     def withdrawl(self, my_account, withdrawl_amount):
-        if my_account <= withdrawl_amount:
+        if my_account.balance <= withdrawl_amount:
             print(f"insufficient Balance, Withdrawl Denied")
         else:
-            my_account -= withdrawl_amount
+            my_account.balance -= withdrawl_amount
             print(
                 f"{withdrawl_amount} has been withdrawn from your account, new balance: ${self.balance}"
             )
