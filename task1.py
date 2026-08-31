@@ -1,4 +1,4 @@
-from Transaction import Transaction
+from Transactions import Transaction
 
 class Client:
     def __init__(

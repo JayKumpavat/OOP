@@ -20,3 +20,4 @@ class Transaction:
                   f'{account_b.acc_type}: {account_b.balance}\n'
                   f'Transfer Description: {description}\n'
                   f'status: {status}\n')
+        
