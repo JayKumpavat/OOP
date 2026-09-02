@@ -21,7 +21,7 @@ class Branch:
             print(f"{self.__b_name} is {self.b_status}, therefore it cannot be Closed")
 
     def set_upd_branch_no(self, new_number: int):
-        if len(str(new_number)) == 9:
+        if isinstance(new_number, int) and len(str(new_number)) == 9:
             self.__b_phoneno = new_number
             print(f"The Branch phone number is changed to: {self.__b_phoneno}")
         else:
@@ -34,13 +34,19 @@ class Branch:
         print(f"The branch number is {self.__b_number}, and its name is {self.__b_name}. Its located in {self.__b_suburb}")
         print(f"its phone number is {self.__b_phoneno} and its current status is {self.b_status}")
 
-    def set_change_branch_name(self, new_branch_name):
-        self.__b_name = new_branch_name
-        return f"branch name has been changed to {self.__b_name}"
+    def set_change_branch_name(self, new_branch_name: str):
+        if isinstance(new_branch_name, str):
+            self.__b_name = new_branch_name
+            return f"branch name has been changed to {self.__b_name}"
+        else:
+            print("please enter branch name again, it can only have letters")
     
-    def set_change_branch_suburb(self, new_suburb):
-        self.__b_suburb = new_suburb
-        return f"branch {self.__b_number} suburb has been changed to {self.__b_suburb}"
+    def set_change_branch_suburb(self, new_suburb: str):
+        if isinstance(new_suburb, str):
+            self.__b_suburb = new_suburb
+            return f"branch {self.__b_number} suburb has been changed to {self.__b_suburb}"
+        else:
+            print("Please enter the address again, it has to be in string")
     
 
 

@@ -9,6 +9,7 @@ class Account:
         print(f"Account Type: {self.acc_type}")
         print(f"Account Balance: ${self.balance}")
 
+
     def __str__(self):
         print(f"The account number is {self.__acc_number}, and it is a {self.acc_type} account with a balance of ${self.balance}")
 
