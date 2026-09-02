@@ -25,7 +25,7 @@ class Branch:
             self.__b_phoneno = new_number
             print(f"The Branch phone number is changed to: {self.__b_phoneno}")
         else:
-            print(f"Please enter a valid 10 digit phone number")
+            print(f"Please enter a valid 9 digit phone number starting after 0")
 
     def feedback(self, branch_feedback: str):
         print(f"Feedback: {branch_feedback}")
