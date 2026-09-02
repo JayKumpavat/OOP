@@ -57,6 +57,17 @@ class Transaction:
         self.description = new_desc
         return f"the description has been changed to: {new_desc}"
 
+    def __str__(self):
+        print(f"The transaction that is conducted is a {self.transaction_type}, with amount {self.t_amount}, and the status is {self.status}")
+
+
+    def __repr__(self):
+        print(f"transaction id: {self.transaction_id} \n\
+              transaction type: {self.transaction_type} \n\
+                transaction amount: {self.t_amount} \n\
+                transaction description: {self.description}\n\
+                status: {self.status}")
+
 
 
 
