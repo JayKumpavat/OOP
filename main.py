@@ -26,4 +26,8 @@ branch1.closed_branch()
 Account1.__repr__()
 Account1.__str__()
 
+transfering.process()
+
+transfering.__str__()
+
 
