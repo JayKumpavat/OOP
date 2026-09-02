@@ -17,7 +17,7 @@ transfering = Transaction(1, "money_transfer", 10000, "Moving Money to savings")
 transfering.withdrawl(Account1, 1000)
 
 
-branch1 = Branch("1","branch 1", "Enfield", 419422184)
+branch1 = Branch(1,"branch 1", "Enfield", 419422184)
 # branch2 = Branch("2", "branch2", "sailsbury", 592833148)
 
 

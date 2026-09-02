@@ -1,5 +1,5 @@
 class Branch:
-    def __init__(self, branch_number: str, branch_name: str, branch_suburb: str, branch_phonenumber) -> None:
+    def __init__(self, branch_number: int, branch_name: str, branch_suburb: str, branch_phonenumber: int) -> None:
         self.b_number = branch_number
         self.b_name = branch_name
         self.b_suburb = branch_suburb
