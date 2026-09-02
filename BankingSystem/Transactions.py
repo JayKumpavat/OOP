@@ -1,5 +1,5 @@
 class Transaction:
-    def __init__(self, transaction_id, transaction_type, t_amount, description) -> None:
+    def __init__(self, transaction_id: int, transaction_type: str, t_amount: int, description: str) -> None:
         self.__transaction_id = transaction_id
         self.transaction_type = transaction_type
         self.t_amount = t_amount
@@ -7,24 +7,28 @@ class Transaction:
         self.status = "Pending"
 
     def deposit(self, my_account, deposit_amount):
-        self.balance += deposit_amount
-        print(
-            f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
-        )
-
-    def withdrawl(self, my_account, withdrawl_amount):
-        if my_account.balance <= withdrawl_amount:
-            print(f"insufficient Balance, Withdrawl Denied")
+        if isinstance(deposit_amount, (int,float)):
+            self.balance += deposit_amount
+            print(
+                f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
+            )
         else:
+            print(f"incorrect deposit amount, should be int")
+
+    def withdrawl(self, my_account, withdrawl_amount: int):
+        if isinstance(withdrawl_amount, (int,float)) and my_account.balance >= withdrawl_amount:
             my_account.balance -= withdrawl_amount
             print(
                 f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
             )
+        else:
+            print(f"insufficient Balance, Withdrawl Denied")
+
 
     def viewbalance(self, my_account):
         print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
 
-    def transfering(self, transaction_id, account_a, account_b, t_amount, description, status):
+    def transfering(self, transaction_id: int, account_a, account_b, t_amount: int, description: str):
         if account_a.balance < t_amount:
             return f'Insuffient Balance, Try Again'
         else:
@@ -37,7 +41,7 @@ class Transaction:
                   f'Account Number (Deposit): {account_b.acc_number} \n'
                   f'{account_b.acc_type}: {account_b.balance}\n'
                   f'Transfer Description: {description}\n'
-                  f'status: {status}\n')
+                  f'status: {self.status}\n')
 
     def process(self):
         if self.status == "Pending":
