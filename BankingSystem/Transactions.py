@@ -58,8 +58,9 @@ class Transaction:
             return f"The transaction could not be cancelled as it is {self.status}"
 
     def change_desc(self, new_desc: str):
-        self.description = new_desc
-        return f"the description has been changed to: {new_desc}"
+        if isinstance(new_desc, str):
+            self.description = new_desc
+            return f"the description has been changed to: {new_desc}"
 
     def __str__(self):
         print(f"The transaction that is conducted is a {self.transaction_type}, with amount {self.t_amount}, and the status is {self.status}")
