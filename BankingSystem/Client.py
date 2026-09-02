@@ -1,9 +1,9 @@
 class Client:
     def __init__(
         self,
-        client_name,
-        client_id,
-        client_no,
+        client_name: str,
+        client_id: int,
+        client_no: int,
     ):
         self.__client_name = client_name
         self.__client_id = client_id
@@ -15,16 +15,25 @@ class Client:
         print("Client Number:", self.__client_no)
 
     def set_change_client_number(self, new_number):
-        self.__client_no = new_number
-        print("Client number updated to:", self.__client_no)
+        if isinstance(new_number, int) and len(str(new_number)) == 9:
+            self.__client_no = new_number
+            print("Client number updated to:", self.__client_no)
+        else:
+            print(f"phone number must have 9 numbers (not including 0)")
 
     def set_client_name(self, new_name):
-        self.__client_name = new_name
-        return f"Name has been changed to {self.__client_name}"
+        if isinstance(new_name, str):
+            self.__client_name = new_name
+            return f"Name has been changed to {self.__client_name}"
+        else:
+            print(f"The client name cannot have numbers or symbols, please try again")
 
     def set_client_id(self, new_id):
-        self.__client_id = new_id
-        return f"client Id has been changed to: {self.__client_id}"
+        if isinstance(new_id, int) and len(str(new_id)) <= 9:
+            self.__client_id = new_id
+            return f"client Id has been changed to: {self.__client_id}"
+        else:
+            print(f"the new client_id must be between 1 - 9 digits")
 
 
     def __str__(self):
