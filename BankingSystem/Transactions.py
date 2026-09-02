@@ -63,10 +63,10 @@ class Transaction:
 
     def __repr__(self):
         print(f"transaction id: {self.__transaction_id} \n\
-              transaction type: {self.transaction_type} \n\
-                transaction amount: {self.t_amount} \n\
-                transaction description: {self.description}\n\
-                status: {self.status}")
+transaction type: {self.transaction_type} \n\
+transaction amount: {self.t_amount} \n\
+transaction description: {self.description}\n\
+status: {self.status}")
 
 
 

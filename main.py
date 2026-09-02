@@ -28,6 +28,6 @@ Account1.__str__()
 
 transfering.process()
 
-transfering.__str__()
+transfering.__repr__()
 
 
