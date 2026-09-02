@@ -1,6 +1,6 @@
 class Transaction:
     def __init__(self, transaction_id, transaction_type, t_amount, description) -> None:
-        self.transaction_id = transaction_id
+        self.__transaction_id = transaction_id
         self.transaction_type = transaction_type
         self.t_amount = t_amount
         self.description = description
@@ -62,7 +62,7 @@ class Transaction:
 
 
     def __repr__(self):
-        print(f"transaction id: {self.transaction_id} \n\
+        print(f"transaction id: {self.__transaction_id} \n\
               transaction type: {self.transaction_type} \n\
                 transaction amount: {self.t_amount} \n\
                 transaction description: {self.description}\n\
