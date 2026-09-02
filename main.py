@@ -16,11 +16,12 @@ transfering = Transaction(1, "money_transfer", 10000, "Moving Money to savings")
 #transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
 transfering.withdrawl(Account1, 1000)
 
-# branch1 = Branch("1","branch 1", "Enfield", 419422184)
+
+branch1 = Branch("1","branch 1", "Enfield", 419422184)
 # branch2 = Branch("2", "branch2", "sailsbury", 592833148)
 
 
-# branch1.open_branch()
+branch1.closed_branch()
 
 Account1.__repr__()
 Account1.__str__()
