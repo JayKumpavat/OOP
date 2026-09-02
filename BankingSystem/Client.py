@@ -14,7 +14,7 @@ class Client:
         print("Client Name:", self.client_name)
         print("Client Number:", self.__client_no)
 
-    def change_client_number(self, new_number):
+    def set_change_client_number(self, new_number):
         self.__client_no = new_number
         print("Client number updated to:", self.__client_no)
 
