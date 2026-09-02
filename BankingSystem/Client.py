@@ -18,6 +18,11 @@ class Client:
         self.client_no = new_number
         print("Client number updated to:", self.client_no)
 
+    def set_client_name(self, new_name):
+        self.client_name = new_name
+        return f"Name has been changed to {self.client_name}"
+
+
     def __str__(self):
         print(f"Client's Id is {self.client_id} and client name is {self.client_name} and their phone number is {self.client_no}")
 
