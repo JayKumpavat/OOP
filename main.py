@@ -1,4 +1,4 @@
-from BankingSystem.Transactions import Transaction, bankWithrawlDeposit
+from BankingSystem.Transactions import Transaction
 from BankingSystem.Client import Client
 from BankingSystem.Accounts import Account
 from BankingSystem.Branch import Branch
