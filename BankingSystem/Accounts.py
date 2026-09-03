@@ -21,6 +21,15 @@ class Account:
         print(f"Account Type: {self.__acc_type}")
         print(f"Account Balance: ${self.__balance}")
 
+    def get_acc_number(self):
+        return self.__acc_number
+ 
+    def get_acc_type(self):
+        return self.__acc_type
+ 
+    def get_balance(self):
+        return self.__balance
+
     # str representation of account information
     def __str__(self):
         print(
