@@ -1,3 +1,7 @@
+from Accounts import Account
+from Branch import Branch
+
+
 class Client:
     def __init__(
         self,
@@ -20,11 +24,39 @@ class Client:
         else:
             print("Enter a valid phone with 9 digits not including 0")
 
+        self.__accounts = []
+        self.__preferred_branch = None
+
     # Displays client information (name, client_id, client_phone_number)
     def display_client_info(self):
         print("Client ID:", self.__client_id)
         print("Client Name:", self.__client_name)
         print("Client Number:", self.__client_no)
+
+    # Adds an existing Account ot this client (aggregation)
+    def add_account(self, account):
+        if not isinstance(account, Account):
+            print("Only Account objects can be added")
+            return
+
+        if account in self.__accounts:
+            print("This account has already been added to this client")
+            return
+
+        self.__accounts.append(account)
+        print("Account added to client")
+
+    # Removes an Account from this client without destroying the account
+    def remove_account(self, account):
+        if account not in self.__accounts:
+            print("This account is not assigned to this client")
+            return
+
+        self.__accounts.remove(account)
+        print("Account removed from client")
+
+    def get_accounts(self):
+        return list(self.__accounts)
 
     # This function allows client to update their phone number
     def set_change_client_number(self, new_number):
