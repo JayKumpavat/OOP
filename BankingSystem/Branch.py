@@ -33,11 +33,6 @@ class Branch:
     def feedback(self, branch_feedback: str):
         print(f"Feedback: {branch_feedback}")
 
-#__str__
-    def __str__(self):
-        print(f"The branch number is {self.__b_number}, and its name is {self.__b_name}. Its located in {self.__b_suburb}")
-        print(f"its phone number is {self.__b_phoneno} and its current status is {self.b_status}")
-
 # changing branch name and suburb (for admin only)
     def set_change_branch_name(self, new_branch_name: str):
         if isinstance(new_branch_name, str):
@@ -54,6 +49,11 @@ class Branch:
             print("Please enter the address again, it has to be in string")
     
 
+#__str__
+    def __str__(self):
+        print(f"The branch number is {self.__b_number}, and its name is {self.__b_name}. Its located in {self.__b_suburb}")
+        print(f"its phone number is {self.__b_phoneno} and its current status is {self.b_status}")
+        
 # __repr__
     def __repr__(self):
         print(f"Branch Number: {self.__b_number}\n\
