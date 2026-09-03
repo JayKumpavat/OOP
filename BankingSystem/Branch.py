@@ -6,10 +6,15 @@ class Branch:
         branch_suburb: str,
         branch_phonenumber: int,
     ) -> None:
-        self.__b_number = branch_number
-        self.__b_name = branch_name
-        self.__b_suburb = branch_suburb
-        self.__b_phoneno = branch_phonenumber
+
+        if isinstance(branch_number, int):
+            self.__b_number = branch_number
+        if isinstance(branch_name, str):
+            self.__b_name = branch_name
+        if isinstance(branch_suburb, str):
+            self.__b_suburb = branch_suburb
+        if isinstance(branch_phonenumber, int):
+            self.__b_phoneno = branch_phonenumber
         self.__b_status = "Closed"
 
     # open and closing branch
