@@ -13,10 +13,17 @@ learning experience:
 during the discussion/ code review, my tutor explained why account should only have one responsbility, refering to SOLID's principles. He then talked about how its easier to test the account logic and transaction logic seperatly. He also commented to apply pep8 formatting which I hadn't gotten up to but was prepering to start. I asked him why we should use it and he responded by saying that if your working in a company or with a team, having the same formatting can make reading and editing code easier as everyone is writing very similarly. 
 
 **Evidence of Code Change**
+
 *Before*
 ![alt text](image.png)
 
+![alt text](image-1.png)
 
+*After*
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
 
 ## **Week 3**
 
