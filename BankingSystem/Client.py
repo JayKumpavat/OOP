@@ -55,6 +55,17 @@ class Client:
         self.__accounts.remove(account)
         print("Account removed from client")
 
+    def set_preferred_branch(self,branch):
+        if not isinstance(branch, Branch):
+            print("Only Branch Obejects can be set as prefferences")
+            return
+
+        self.__preferred_branch = branch
+        print("Preferred branch has been set")
+
+    def get_preffered_branch(self):
+        return self.__preferred_branch
+
     def get_accounts(self):
         return list(self.__accounts)
 
