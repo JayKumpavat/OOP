@@ -30,6 +30,21 @@ class Account:
     def get_balance(self):
         return self.__balance
 
+    #Setters validated access to private attributes
+    def set_acc_type(self, new_type: str):
+        if isinstance(new_type, str) and new_type.strip() != "":
+            self.__acc_type = new_type
+            return f"Account type updated to: {self.__acc_type}"
+        else:
+            return "Invalid account type, it must be a non-empty string"
+ 
+    def set_balance(self, new_balance):
+        if isinstance(new_balance, (int, float)) and new_balance >= 0:
+            self.__balance = new_balance
+            return f"Balance updated to: ${self.__balance}"
+        else:
+            return "Invalid balance, it must be a non-negative number"
+
     # str representation of account information
     def __str__(self):
         print(
