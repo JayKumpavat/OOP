@@ -77,3 +77,7 @@ class Branch:
               Location: {self.__b_suburb}\n\
               Phone number: {self.__b_phoneno}\n\
               Current Status: {self.__b_status}")
+
+    def get_branch_name(self):
+        return self.__b_name
+    

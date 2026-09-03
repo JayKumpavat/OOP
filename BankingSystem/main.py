@@ -1,13 +1,13 @@
-from BankingSystem.Accounts import Account
-from BankingSystem.Client import Client
-from BankingSystem.Branch import Branch
-from BankingSystem.Transactions import Transaction
-
+from Accounts import Account
+from Client import Client
+from Branch import Branch
+from Transactions import Transaction
 
 """
 Task 7: Demonstrate the Updated Project
 Shows the Topic 3 changes: encapsulation, validation, aggregation, and association.
 """
+
 def section(title):
     print("\n" + "=" * 60)
     print(title)
@@ -125,8 +125,8 @@ print("-- Setting preferred branches for clients --")
 client_a.set_preferred_branch(branch1)
 client_b.set_preferred_branch(branch2)
 
-print("\nAlice's preferred branch:", client_a.get_preffered_branch())
-print("Bob's preferred branch:", client_b.get_preffered_branch())
+print("\nAlice's preferred branch:", client_a.get_preffered_branch().get_branch_name())
+print("Bob's preferred branch:", client_b.get_preffered_branch().get_branch_name())
 
 print("\n-- Attempting to set an invalid object as preferred branch --")
 client_a.set_preferred_branch("Not a branch object")
