@@ -5,9 +5,20 @@ class Client:
         client_id: int,
         client_no: int,
     ):
-        self.__client_name = client_name
-        self.__client_id = client_id
-        self.__client_no = client_no
+        if isinstance(client_name, str):
+            self.__client_name = client_name
+        else:
+            print("Enter a valid name, it must only contain letters")
+
+        if isinstance(client_id, int):
+            self.__client_id = client_id
+        else:
+            print("Enter a client id that is only numbers and no spaces in between or symbols")
+
+        if isinstance(client_no, int) and len(str(client_id)) == 9:
+            self.__client_no = client_no
+        else:
+            print("Enter a valid phone with 9 digits not including 0")
 
     # Displays client information (name, client_id, client_phone_number)
     def display_client_info(self):
