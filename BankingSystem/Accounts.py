@@ -1,13 +1,19 @@
 class Account:
     def __init__(
             self, 
-            acc_number, 
-            acc_type, 
+            acc_number: int, 
+            acc_type: str, 
             balance
             ) -> None:
-        self.__acc_number = acc_number
-        self.__acc_type = acc_type
-        self.__balance = balance
+
+        if isinstance(acc_number, int):
+            self.__acc_number = acc_number
+
+        if isinstance(acc_type, str):
+            self.__acc_type = acc_type
+
+        if isinstance(balance, (int,bool)):
+            self.__balance = balance
 
     # display's Account information
     def display_acc_info(self):
