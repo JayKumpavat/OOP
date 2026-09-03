@@ -12,7 +12,7 @@ class Account:
         if isinstance(acc_type, str):
             self.__acc_type = acc_type
 
-        if isinstance(balance, (int,bool)):
+        if isinstance(balance, (int,float)):
             self.__balance = balance
 
     # display's Account information
