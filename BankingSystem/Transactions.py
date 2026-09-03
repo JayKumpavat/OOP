@@ -6,10 +6,19 @@ class Transaction:
         t_amount: int,
         description: str,
     ) -> None:
-        self.__transaction_id = transaction_id
-        self.__transaction_type = transaction_type
-        self.__t_amount = t_amount
-        self.description = description
+
+        if isinstance(transaction_id, int):
+            self.__transaction_id = transaction_id
+
+        if isinstance(transaction_type, str):
+            self.__transaction_type = transaction_type
+
+        if isinstance(t_amount, int):
+            self.__t_amount = t_amount
+
+        if isinstance(description, str):
+            self.description = description
+            
         self.__status = "Pending"
 
     # transfering money betwen two accounts
