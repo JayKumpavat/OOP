@@ -10,22 +10,22 @@ class Branch:
         self.__b_name = branch_name
         self.__b_suburb = branch_suburb
         self.__b_phoneno = branch_phonenumber
-        self.b_status = "Closed"
+        self.__b_status = "Closed"
 
     # open and closing branch
     def open_branch(self):
-        if self.b_status == "Closed":
-            self.b_status = "Opened"
-            print(f"{self.__b_name} is now {self.b_status}")
+        if self.__b_status == "Closed":
+            self.__b_status = "Opened"
+            print(f"{self.__b_name} is now {self.__b_status}")
         else:
-            print(f"{self.__b_name} is {self.b_status}, therefore it cannot be Opened")
+            print(f"{self.__b_name} is {self.__b_status}, therefore it cannot be Opened")
 
     def closed_branch(self):
-        if self.b_status == "Opened":
-            self.b_status = "Closed"
-            print(f"{self.__b_name} is now {self.b_status}")
+        if self.__b_status == "Opened":
+            self.__b_status = "Closed"
+            print(f"{self.__b_name} is now {self.__b_status}")
         else:
-            print(f"{self.__b_name} is {self.b_status}, therefore it cannot be Closed")
+            print(f"{self.__b_name} is {self.__b_status}, therefore it cannot be Closed")
 
     # updating branch phonenumber
     def set_upd_branch_no(self, new_number: int):
@@ -62,7 +62,7 @@ class Branch:
             f"The branch number is {self.__b_number}, and its name is {self.__b_name}. Its located in {self.__b_suburb}"
         )
         print(
-            f"its phone number is {self.__b_phoneno} and its current status is {self.b_status}"
+            f"its phone number is {self.__b_phoneno} and its current status is {self.__b_status}"
         )
 
     # __repr__
@@ -71,4 +71,4 @@ class Branch:
               Name: {self.__b_name}\n\
               Location: {self.__b_suburb}\n\
               Phone number: {self.__b_phoneno}\n\
-              Current Status: {self.b_status}")
+              Current Status: {self.__b_status}")

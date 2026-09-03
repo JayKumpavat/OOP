@@ -7,10 +7,10 @@ class Transaction:
         description: str,
     ) -> None:
         self.__transaction_id = transaction_id
-        self.transaction_type = transaction_type
-        self.t_amount = t_amount
+        self.__transaction_type = transaction_type
+        self.__t_amount = t_amount
         self.description = description
-        self.status = "Pending"
+        self.__status = "Pending"
 
     # transfering money betwen two accounts
     def transfering(
@@ -29,23 +29,23 @@ class Transaction:
                 f"Account Number (Deposit): {account_b.acc_number} \n"
                 f"{account_b.acc_type}: {account_b.balance}\n"
                 f"Transfer Description: {description}\n"
-                f"status: {self.status}\n"
+                f"status: {self.__status}\n"
             )
 
     # changing process from completed -> Cancelled
     def process(self):
-        if self.status == "Pending":
-            self.status = "Completed"
-            return f"Your status is now {self.status}"
+        if self.__status == "Pending":
+            self.__status = "Completed"
+            return f"Your status is now {self.__status}"
         else:
-            return f"Could not complete status because it is {self.status}"
+            return f"Could not complete status because it is {self.__status}"
 
     def cancelled(self):
-        if self.status == "Pending":
-            self.status = "Cancelled"
-            return f"The Transaction was {self.status}"
+        if self.__status == "Pending":
+            self.__status = "Cancelled"
+            return f"The Transaction was {self.__status}"
         else:
-            return f"The transaction could not be cancelled as it is {self.status}"
+            return f"The transaction could not be cancelled as it is {self.__status}"
 
     def change_desc(self, new_desc: str):
         if isinstance(new_desc, str):
@@ -55,15 +55,15 @@ class Transaction:
     # __str__ and __repr__
     def __str__(self):
         print(
-            f"The transaction that is conducted is a {self.transaction_type}, with amount {self.t_amount}, and the status is {self.status}"
+            f"The transaction that is conducted is a {self.__transaction_type}, with amount {self.__t_amount}, and the status is {self.__status}"
         )
 
     def __repr__(self):
         print(f"transaction id: {self.__transaction_id} \n\
-transaction type: {self.transaction_type} \n\
-transaction amount: {self.t_amount} \n\
+transaction type: {self.__transaction_type} \n\
+transaction amount: {self.__t_amount} \n\
 transaction description: {self.description}\n\
-status: {self.status}")
+status: {self.__status}")
 
 
 class bankWithrawlDeposit:
@@ -96,5 +96,5 @@ class bankWithrawlDeposit:
             print(f"insufficient Balance, Withdrawl Denied")
 
     # viewing account balance
-    def viewbalance(self, my_account):
+    def view_balance(self, my_account):
         print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
