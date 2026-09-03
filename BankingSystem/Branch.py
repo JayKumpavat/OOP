@@ -17,7 +17,7 @@ class Branch:
             self.__b_phoneno = branch_phonenumber
         self.__b_status = "Closed"
 
-    # open and closing branch
+    # open and closing branch while checking if they are already closed/ open. 
     def open_branch(self):
         if self.__b_status == "Closed":
             self.__b_status = "Opened"
@@ -78,6 +78,7 @@ class Branch:
               Phone number: {self.__b_phoneno}\n\
               Current Status: {self.__b_status}")
 
-    def get_branch_name(self):
-        return self.__b_name
+# testing purpose only
+#   def get_branch_name(self):
+#        return self.__b_name
     

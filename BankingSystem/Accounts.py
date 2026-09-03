@@ -6,6 +6,8 @@ class Account:
             balance
             ) -> None:
 
+        #Isisntance is used to verify the datatype entered into the class
+
         if isinstance(acc_number, int):
             self.__acc_number = acc_number
 
@@ -15,12 +17,13 @@ class Account:
         if isinstance(balance, (int,float)):
             self.__balance = balance
 
-    # display's Account information
+    # Display's account information which includes the account number, account type (savings, credit etc) and account balance
     def display_acc_info(self):
         print(f"Account No: {self.__acc_number}")
         print(f"Account Type: {self.__acc_type}")
         print(f"Account Balance: ${self.__balance}")
 
+    # the 3 get_... are used to read private attributes of the account class
     def get_acc_number(self):
         return self.__acc_number
  
@@ -45,13 +48,13 @@ class Account:
         else:
             return "Invalid balance, it must be a non-negative number"
 
-    # str representation of account information
+    # Str representation of account information.
     def __str__(self):
         print(
             f"The account number is {self.__acc_number}, and it is a {self.__acc_type} account with a balance of ${self.__balance}"
         )
 
-    # repr for account info
+    # Repr for account info.
     def __repr__(self):
         print(
             f"Account No: {self.__acc_number}\n"
