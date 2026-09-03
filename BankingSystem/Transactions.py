@@ -5,31 +5,6 @@ class Transaction:
         self.t_amount = t_amount
         self.description = description
         self.status = "Pending"
-
-# Depositing money 
-    def deposit(self, my_account, deposit_amount):
-        if isinstance(deposit_amount, (int,float)):
-            self.balance += deposit_amount
-            print(
-                f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
-            )
-        else:
-            print(f"incorrect deposit amount, should be int")
-
-#withdrawl money
-    def withdrawl(self, my_account, withdrawl_amount: int):
-        if isinstance(withdrawl_amount, (int,float)) and my_account.balance >= withdrawl_amount:
-            my_account.balance -= withdrawl_amount
-            print(
-                f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
-            )
-        else:
-            print(f"insufficient Balance, Withdrawl Denied")
-
-#viewing account balance
-    def viewbalance(self, my_account):
-        print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
-
 #transfering money betwen two accounts
     def transfering(self, transaction_id: int, account_a, account_b, t_amount: int, description: str):
         if account_a.balance < t_amount:
@@ -76,6 +51,34 @@ transaction type: {self.transaction_type} \n\
 transaction amount: {self.t_amount} \n\
 transaction description: {self.description}\n\
 status: {self.status}")
+
+
+class bankWithrawlDeposit:
+    def __init__(self,) -> None:
+        pass
+# Depositing money 
+    def deposit(self, my_account, deposit_amount):
+        if isinstance(deposit_amount, (int,float)):
+            self.balance += deposit_amount
+            print(
+                f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
+            )
+        else:
+            print(f"incorrect deposit amount, should be int")
+
+#withdrawl money
+    def withdrawl(self, my_account, withdrawl_amount: int):
+        if isinstance(withdrawl_amount, (int,float)) and my_account.balance >= withdrawl_amount:
+            my_account.balance -= withdrawl_amount
+            print(
+                f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
+            )
+        else:
+            print(f"insufficient Balance, Withdrawl Denied")
+
+#viewing account balance
+    def viewbalance(self, my_account):
+        print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
 
 
 

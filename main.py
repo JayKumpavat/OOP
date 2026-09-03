@@ -1,4 +1,4 @@
-from BankingSystem.Transactions import Transaction
+from BankingSystem.Transactions import Transaction, bankWithrawlDeposit
 from BankingSystem.Client import Client
 from BankingSystem.Accounts import Account
 from BankingSystem.Branch import Branch
@@ -14,7 +14,6 @@ Account1 = Account(1101, "Savings", 10000)
 
 transfering = Transaction(1, "money_transfer", 10000, "Moving Money to savings")
 #transfering.transfering(1, Account1, Account2, 500, 'Moving money to savings', 'pending')
-transfering.withdrawl(Account1, 1000)
 
 
 branch1 = Branch(1,"branch 1", "Enfield", 419422184)
