@@ -58,3 +58,10 @@ class Undead:
         if not isinstance(value, int):
             return lowest
         return max(lowest, min(value, highest))
+
+    def __str__(self):
+        return (
+            f"{self.__unit_id} {self.__name}, (Lv {self.__level})"
+            f"{self.MAX_LEVEL}) HP {self.__health}/{self.MAX_HEALTH}"
+            f"PWR {self.__power}/{self.MAX_POWER}"
+        )
