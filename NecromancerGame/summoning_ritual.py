@@ -88,4 +88,11 @@ class SummoningRitual:
             self.__necrotic_cost, self.__spirit_cost, self.__bone_cost,
             self.__flesh_cost, self.__ectoplasm_cost
         )
-        
+
+    def create_summon(self, unit_id: int) -> Undead:
+        return Undead(
+            unit_id, self.__summon_name, self.__starting_health, 
+            self.__starting_power
+        )
+    
+    
