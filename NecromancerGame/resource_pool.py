@@ -7,34 +7,44 @@ class ResourcePool:
     """
     MINIMUM_QUANTITY = 0
 
-    def __init__(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+    def __init__(
+        self,
+        necrotic_runes: int = 0, 
+        spirit_runes: int = 0, 
+        bone_runes: int = 0, 
+        flesh_runes: int = 0, 
+        ectoplasm: int = 0
+        ) -> None:
+
         self.__necrotic_runes = MINIMUM_QUANTITY
         self.__spirit_runes = MINIMUM_QUANTITY
         self.__bone_runes = MINIMUM_QUANTITY
         self.__flesh_runes = MINIMUM_QUANTITY
         self.__ectoplasm = MINIMUM_QUANTITY
 
+        #Starting values go through collect() so they are validated the
+        # same way as every later change.
         if not self.collect(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             print("The resource pool will start empty")
 
     @property
-    def necrotic_runes(self):
+    def necrotic_runes(self) -> int:
         return self.__necrotic_runes
 
     @property
-    def spirit_runes(self):
+    def spirit_runes(self) -> int:
         return self.__spirit_runes
 
     @property
-    def bone_runes(self):
+    def bone_runes(self) -> int:
         return self.__bone_runes
 
     @property
-    def flesh_runes(self):
+    def flesh_runes(self) -> int:
         return self.__flesh_runes
 
     @property
-    def ectoplasm(self):
+    def ectoplasm(self) -> int:
         return self.__ectoplasm
 
     def collect(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
