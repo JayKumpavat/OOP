@@ -8,6 +8,9 @@ class ResourcePool:
         self.__flesh_runes = MINIMUM_QUANTITY
         self.__ectoplasm = MINIMUM_QUANTITY
 
+        if not self.collect(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+            print("The resource pool will start empty")
+
     @property
     def necrotic_runes(self):
         return self.__necrotic_runes
@@ -77,4 +80,13 @@ class ResourcePool:
             and self.__is_valid_quantity(bone_runes)
             and self.__is_valid_quantity(flesh_runes)
             and self.__is_valid_quantity(ectoplasm)
+        )
+
+    def __str__(self):
+        return (
+            f"Necrotic: {self.__necrotic_runes}"
+            f"Spirit: {self.__spirit_runes}"
+            f"Bone: {self.__bone_runes}"
+            f"Flesh: {self.__flesh_runes}"
+            f"Ectoplasm: {self.__ectoplasm}"
         )
