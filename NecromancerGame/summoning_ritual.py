@@ -72,4 +72,20 @@ class SummoningRitual:
     def ectoplasm_cost(self) -> int:
         return self.__ectoplasm_cost
 
-    
+    def can_perform(self, resources: ResourcePool) -> bool:
+        if not isinstance(resources, ResourcePool):
+            print("A ritual needs a valid ResourcePool")
+            return False
+        return resources.has_resources(
+            self.__necrotic_cost, self.__spirit_cost, self.__bone_cost,
+            self.__flesh_cost, self.__ectoplasm_cost
+        )
+
+    def consume_resources(self, resources: ResourcePool) -> bool:
+        if not self.can_perform(resources):
+            return False
+        return resources.spend(
+            self.__necrotic_cost, self.__spirit_cost, self.__bone_cost,
+            self.__flesh_cost, self.__ectoplasm_cost
+        )
+        
