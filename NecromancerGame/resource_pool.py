@@ -39,3 +39,19 @@ class ResourcePool:
         self.__flesh_runes += flesh_runes
         self.__ectoplasm += ectoplasm
         return True
+
+    def __is_valid_quantity(self, quantity):
+        return (
+            isinstance(quantity, int)
+            and not isinstance(quantity, bool)
+            and quantity >= self.MINIMUM_QUANTITY
+        )
+
+    def __all_valid(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+        return (
+            self.__is_valid_quantity(necrotic_runes)
+            and self.__is_valid_quantity(spirit_runes)
+            and self.__is_valid_quantity(bone_runes)
+            and self.__is_valid_quantity(flesh_runes)
+            and self.__is_valid_quantity(ectoplasm)
+        )
