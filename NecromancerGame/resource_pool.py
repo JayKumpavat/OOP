@@ -52,6 +52,17 @@ class ResourcePool:
             and self.__ectoplasm >= ectoplasm
         )
 
+    def spend(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+        if not self.has_resources(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+            return False
+        
+        self.__necrotic_runes -= necrotic_runes
+        self.__spirit_runes -= spirit_runes
+        self.__bone_runes -= bone_runes
+        self.__flesh_runes -= flesh_runes
+        self.__ectoplasm -= ectoplasm
+        return True
+
     def __is_valid_quantity(self, quantity):
         return (
             isinstance(quantity, int)
