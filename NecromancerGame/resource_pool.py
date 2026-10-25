@@ -16,11 +16,11 @@ class ResourcePool:
         ectoplasm: int = 0
         ) -> None:
 
-        self.__necrotic_runes = MINIMUM_QUANTITY
-        self.__spirit_runes = MINIMUM_QUANTITY
-        self.__bone_runes = MINIMUM_QUANTITY
-        self.__flesh_runes = MINIMUM_QUANTITY
-        self.__ectoplasm = MINIMUM_QUANTITY
+        self.__necrotic_runes = self.MINIMUM_QUANTITY
+        self.__spirit_runes = self.MINIMUM_QUANTITY
+        self.__bone_runes = self.MINIMUM_QUANTITY
+        self.__flesh_runes = self.MINIMUM_QUANTITY
+        self.__ectoplasm = self.MINIMUM_QUANTITY
 
         #Starting values go through collect() so they are validated the
         # same way as every later change.
@@ -47,7 +47,15 @@ class ResourcePool:
     def ectoplasm(self) -> int:
         return self.__ectoplasm
 
-    def collect(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+    def collect(
+        self, 
+        necrotic_runes: int = 0, 
+        spirit_runes: int = 0, 
+        bone_runes: int = 0, 
+        flesh_runes: int = 0, 
+        ectoplasm: int = 0
+        ) -> bool:
+
         if not self.__all_valid(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             print("Collection rejected, quantities must be a whole numbers 0+")
             return False
@@ -59,7 +67,15 @@ class ResourcePool:
         self.__ectoplasm += ectoplasm
         return True
 
-    def has_resources(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+    def has_resources(
+        self, 
+        necrotic_runes: int = 0, 
+        spirit_runes: int = 0, 
+        bone_runes: int = 0, 
+        flesh_runes: int = 0, 
+        ectoplasm: int = 0
+        ) -> bool:
+        
         if not self.__all_valid(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             return False
 

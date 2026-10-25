@@ -14,7 +14,7 @@ class Undead:
         self.__level = self.STARTING_LEVEL
         # Starting stats are kept inside the allowed boundaries.
         self.__health = self.__keep_in_range(
-            starting_health, sekf,MIN_HEALTH, self.MAX_POWER
+            starting_health, self.MIN_HEALTH, self.MAX_POWER
         )
         self.__power = self.__keep_in_range(
             starting_power, self.MIN_POWER, self.MAX_POWER
