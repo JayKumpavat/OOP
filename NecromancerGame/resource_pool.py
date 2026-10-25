@@ -1,4 +1,10 @@
 class ResourcePool:
+    """Stores and manges the magical resources used for summoning.
+
+    Quantities can only change through collect() and spend(). Every
+    value is checked before anything changes, so a failed operation
+    leaves all exisiting values exactly the same.
+    """
     MINIMUM_QUANTITY = 0
 
     def __init__(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
