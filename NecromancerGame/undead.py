@@ -20,6 +20,27 @@ class Undead:
             starting_power, self.MIN_POWER, self.MAX_POWER
         )
 
+    @property
+    def unit_id(self):
+        return self.__unit_id
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def level(self):
+        return self.__level
+
+    @property
+    def health(self):
+        return self.__health
+    
+    @property
+    def power(self):
+        return self.__power
+
+
     def __keep_in_range(self, value, lowest, highest):
         if not isinstance(value, int):
             return lowest
