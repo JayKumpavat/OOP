@@ -7,4 +7,23 @@ class ResourcePool:
         self.__bone_runes = MINIMUM_QUANTITY
         self.__flesh_runes = MINIMUM_QUANTITY
         self.__ectoplasm = MINIMUM_QUANTITY
-        
+
+    @property
+    def necrotic_runes(self):
+        return self.__necrotic_runes
+
+    @property
+    def spirit_runes(self):
+        return self.__spirit_runes
+
+    @property
+    def bone_runes(self):
+        return self.__bone_runes
+
+    @property
+    def flesh_runes(self):
+        return self.__flesh_runes
+
+    @property
+    def ectoplasm(self):
+        return self.__ectoplasm
