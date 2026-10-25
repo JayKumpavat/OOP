@@ -62,6 +62,7 @@ class ResourcePool:
         )
 
     def spend(self, necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
+        # Every requirement is checked first so nothing is spent unless te whole cost can be paid.
         if not self.has_resources(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             return False
         
