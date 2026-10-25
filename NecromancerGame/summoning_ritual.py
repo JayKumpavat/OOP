@@ -16,7 +16,7 @@ class SummoningRitual:
         flesh_cost: int = 0,
         ectoplasm_cost: int = MIN_ECTOPLASM_COST
         ) -> None:
-        
+
         self.__ritual_name = ritual_name
         self.__summon_name = summon_name
         self.__starting_health = starting_health
@@ -36,4 +36,40 @@ class SummoningRitual:
             print(f"{ritual_name} must cost Ectoplasm, using the minimum")
             self.__ectoplasm_cost = self.MIN_ECTOPLASM_COST
 
-        
+    @property
+    def ritual_name(self) -> str:
+        return self.__ritual_name
+
+    @property
+    def summon_name(self) -> str:
+        return self.__summon_name
+
+    @property
+    def starting_health(self) -> int:
+        return self.__starting_health
+
+    @property
+    def starting_power(self) -> int:
+        return self.__starting_power
+
+    @property
+    def necrotic_cost(self) -> int:
+        return self.__necrotic_cost
+
+    @property
+    def spirit_cost(self) -> int:
+        return self.__spirit_cost
+
+    @property
+    def bone_cost(self) -> int:
+        return self.__bone_cost
+
+    @property
+    def flesh_cost(self) -> int:
+        return self.__flesh_cost
+
+    @property
+    def ectoplasm_cost(self) -> int:
+        return self.__ectoplasm_cost
+
+    
