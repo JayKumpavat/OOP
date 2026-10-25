@@ -95,4 +95,11 @@ class SummoningRitual:
             self.__starting_power
         )
     
-    
+    def __str__(self) -> str:
+        return (
+            f"{self.__ritual_name} -> {self.__summon_name} "
+            f"(HP {self.__starting_health}, PWR {self.__starting_power}) | "
+            f"Cost: Necrotic {self.__necrotic_cost}, "
+            f"Spirit {self.__spirit_cost}, Bone {self.__bone_cost}, "
+            f"Flesh {self.__flesh_cost}, Ectoplasm {self.__ectoplasm_cost}"
+        )
