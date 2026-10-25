@@ -40,6 +40,19 @@ class Undead:
     def power(self):
         return self.__power
 
+    def level_up(self):
+        if self.__level >= self.MAX_LEVEL:
+            print(f"{self.__name} is already at the maximum level")
+            return False
+        
+        self.__level += 1
+        self.__health = min(
+            self.__health + self.HELATH_PER_LEVEL, self.MAX_HEALTH
+        )
+        self.__power = min(
+            self.__power + self.POWER_PER_LEVEL, self.MAX_POWER
+        )
+        return True
 
     def __keep_in_range(self, value, lowest, highest):
         if not isinstance(value, int):
