@@ -4,7 +4,19 @@ from NecromancerGame.undead import Undead
 class SummoningRitual:
     MIN_ECTOPLASM_COST = 1
 
-    def __init__(self, ritual_name, summon_name, starting_health, starting_power, necrotic_cost, spirit_cost, bone_cost, flesh_cost, ectoplasm_cost: int = MIN_ECTOPLASM_COST):
+    def __init__(
+        self, 
+        ritual_name: str,
+        summon_name: str,
+        starting_health: int,
+        starting_power: int,
+        necrotic_cost: int = 0,
+        spirit_cost: int = 0,
+        bone_cost: int = 0,
+        flesh_cost: int = 0,
+        ectoplasm_cost: int = MIN_ECTOPLASM_COST
+        ) -> None:
+        
         self.__ritual_name = ritual_name
         self.__summon_name = summon_name
         self.__starting_health = starting_health
