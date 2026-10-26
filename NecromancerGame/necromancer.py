@@ -33,3 +33,15 @@ class Necromancer:
         @property
         def army(self) -> list:
             return list(self.__undead)
+
+        def collect_resources(
+            self,
+            necrotic_runes: int = 0,
+            spirit_runes: int = 0,
+            bone_runes: int = 0, 
+            flesh_runes: int = 0, 
+            ectoplasm: int = 0,
+        ) -> bool:
+            return self.__resources.collect(
+                necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm
+            )
