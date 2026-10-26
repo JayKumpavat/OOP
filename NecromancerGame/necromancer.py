@@ -45,3 +45,21 @@ class Necromancer:
             return self.__resources.collect(
                 necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm
             )
+
+        def summon(self, ritual: SummoningRitual) -> Undead:
+            if not isinstance(ritual, SummoningRitual):
+                print("Only a SummoningRitual can be performed")
+                return None
+            
+            if len(self.__undead) >= self.MAX_UNDEAD:
+                print(f"{self.__name} cannot control more than {self.MAX_UNDEAD} undead")
+                return None
+
+            if not ritual.consume_resources(self.__resources):
+                print(f"Not enough resources to perform {ritual.ritual_name}")
+                return None
+
+            summoned = ritual.create_summon(self.__next_unit_id)
+            self.__next_unit_id += 1
+            self.__undead.append(summoned)
+            return summoned
