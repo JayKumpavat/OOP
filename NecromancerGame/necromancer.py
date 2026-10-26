@@ -64,4 +64,40 @@ class Necromancer:
         self.__undead.append(summoned)
         return summoned
 
+    def dismiss(self, unit_id: int) -> bool:
+        undead = self.__find_undead(unit_id)
+        if undead is None:
+            print(f"No undead with id {unit_id} is under control")
+            return False
+        self.__undead.remove(undead)
+        return True
+
+    def level_undead(self, unit_id: int) -> bool:
+        undead = self.__undead.__find_undead(unit_id)
+        if undead is None:
+            print(f"No undead with id {unit_id} is under control")
+            return False
+        return undead.level_up()
+
+    def describe_undead(self, unit_id: int) -> bool:
+        undead = self.__find_undead(unit_id)
+        if undead is None:
+            return f"No undead with id {unit_id} is under control"
+        return str(undead)
+
+    def __find_undead(self, unit_id: int) -> Undead:
+        for undead in self.__undead:
+            if undead.unit_id == unit_id:
+                return undead
+        return None
     
+    def __str__(self) -> str:
+        lines = [
+            f"Necromancer {self.__name}"
+            f"({len(self.__undead)}/{self.MAX_UNDEAD} undead)",
+            f"Resrouces: {self.__resources}",
+        ]
+        for undead in self.__undead:
+            lines.append(f" {undead}")
+        return "\n".join(lines)
+        
