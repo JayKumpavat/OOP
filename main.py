@@ -1,5 +1,5 @@
-from necromancy_game.necromancer import Necromancer
-from necromancy_game.summoning_ritual import SummoningRitual
+from NecromancerGame.necromancer import Necromancer
+from NecromancerGame.summoning_ritual import SummoningRitual
 
 
 def print_heading(title: str) -> None:

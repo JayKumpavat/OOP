@@ -73,7 +73,7 @@ class Necromancer:
         return True
 
     def level_undead(self, unit_id: int) -> bool:
-        undead = self.__undead.__find_undead(unit_id)
+        undead = self.__find_undead(unit_id)
         if undead is None:
             print(f"No undead with id {unit_id} is under control")
             return False
