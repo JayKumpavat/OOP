@@ -3,7 +3,8 @@ class Transaction:
         self,
         transaction_id: int,
         transaction_type: str,
-        t_amount: int,
+        amount: int,
+        resulting_balance: float,
         description: str,
     ) -> None:
 
@@ -13,8 +14,8 @@ class Transaction:
         if isinstance(transaction_type, str):
             self.__transaction_type = transaction_type
 
-        if isinstance(t_amount, int):
-            self.__t_amount = t_amount
+        if isinstance(amount, int):
+            self.__t_amount = amount
 
         if isinstance(description, str):
             self.description = description
