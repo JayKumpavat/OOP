@@ -22,44 +22,46 @@ class Necromancer:
         self.__undead = []
         self.__next_unit_id = self.FIRST_UNIT_ID
 
-        @property
-        def name(self) -> str:
-            return self.__name
+    @property
+    def name(self) -> str:
+        return self.__name
 
-        @property 
-        def resource_summary(self) -> str:
-            return str(self.__resources)
+    @property 
+    def resource_summary(self) -> str:
+        return str(self.__resources)
 
-        @property
-        def army(self) -> list:
-            return list(self.__undead)
+    @property
+    def army(self) -> list:
+        return list(self.__undead)
 
-        def collect_resources(
-            self,
-            necrotic_runes: int = 0,
-            spirit_runes: int = 0,
-            bone_runes: int = 0, 
-            flesh_runes: int = 0, 
-            ectoplasm: int = 0,
-        ) -> bool:
-            return self.__resources.collect(
-                necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm
-            )
+    def collect_resources(
+        self,
+        necrotic_runes: int = 0,
+        spirit_runes: int = 0,
+        bone_runes: int = 0, 
+        flesh_runes: int = 0, 
+        ectoplasm: int = 0,
+    ) -> bool:
+        return self.__resources.collect(
+            necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm
+        )
 
-        def summon(self, ritual: SummoningRitual) -> Undead:
-            if not isinstance(ritual, SummoningRitual):
-                print("Only a SummoningRitual can be performed")
-                return None
-            
-            if len(self.__undead) >= self.MAX_UNDEAD:
-                print(f"{self.__name} cannot control more than {self.MAX_UNDEAD} undead")
-                return None
+    def summon(self, ritual: SummoningRitual) -> Undead:
+        if not isinstance(ritual, SummoningRitual):
+            print("Only a SummoningRitual can be performed")
+            return None
+        
+        if len(self.__undead) >= self.MAX_UNDEAD:
+            print(f"{self.__name} cannot control more than {self.MAX_UNDEAD} undead")
+            return None
 
-            if not ritual.consume_resources(self.__resources):
-                print(f"Not enough resources to perform {ritual.ritual_name}")
-                return None
+        if not ritual.consume_resources(self.__resources):
+            print(f"Not enough resources to perform {ritual.ritual_name}")
+            return None
 
-            summoned = ritual.create_summon(self.__next_unit_id)
-            self.__next_unit_id += 1
-            self.__undead.append(summoned)
-            return summoned
+        summoned = ritual.create_summon(self.__next_unit_id)
+        self.__next_unit_id += 1
+        self.__undead.append(summoned)
+        return summoned
+
+    
