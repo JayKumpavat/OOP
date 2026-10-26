@@ -1,110 +1,66 @@
 class Transaction:
+    """A record of one successful deposit or withdrawal on an account.
+
+    Transaction objects are created and owned by an Account
+    (composition). Once a record is created it cannot be changed, so
+    every attribute is private and exposed through read-only properties.
+    """
+
     def __init__(
         self,
         transaction_id: int,
         transaction_type: str,
-        amount: int,
+        amount: float,
         resulting_balance: float,
         description: str,
     ) -> None:
+        self.__transaction_id = transaction_id
+        self.__transaction_type = transaction_type
+        self.__amount = amount
+        self.__resulting_balance = resulting_balance
+        self.__description = description
 
-        if isinstance(transaction_id, int):
-            self.__transaction_id = transaction_id
+    @property
+    def transaction_id(self) -> int:
+        return self.__transaction_id
 
-        if isinstance(transaction_type, str):
-            self.__transaction_type = transaction_type
+    @property
+    def transaction_type(self) -> str:
+        return self.__transaction_type
 
-        if isinstance(amount, int):
-            self.__t_amount = amount
+    @property
+    def amount(self) -> float:
+        return self.__amount
 
-        if isinstance(description, str):
-            self.description = description
-            
-        self.__status = "Pending"
+    @property
+    def resulting_balance(self) -> float:
+        return self.__resulting_balance
 
-    # transfering money betwen two accounts
-    def transfering(
-        self, transaction_id: int, account_a, account_b, t_amount: int, description: str
-    ):
-        if account_a.balance < t_amount:
-            return f"Insuffient Balance, Try Again"
-        else:
-            account_a.balance -= t_amount
-            account_b.balance += t_amount
+    @property
+    def description(self) -> str:
+        return self.__description
 
-            print(
-                f"Transaction ID: {transaction_id} \n"
-                f"Account Number (Withdrawl): {account_a.acc_number} \n"
-                f"{account_a.acc_type}: {account_a.balance} \n"
-                f"Account Number (Deposit): {account_b.acc_number} \n"
-                f"{account_b.acc_type}: {account_b.balance}\n"
-                f"Transfer Description: {description}\n"
-                f"status: {self.__status}\n"
-            )
-
-    # changing process from completed -> Cancelled
-    def process(self):
-        if self.__status == "Pending":
-            self.__status = "Completed"
-            return f"Your status is now {self.__status}"
-        else:
-            return f"Could not complete status because it is {self.__status}"
-
-    def cancelled(self):
-        if self.__status == "Pending":
-            self.__status = "Cancelled"
-            return f"The Transaction was {self.__status}"
-        else:
-            return f"The transaction could not be cancelled as it is {self.__status}"
-
-    def change_desc(self, new_desc: str):
-        if isinstance(new_desc, str):
-            self.description = new_desc
-            return f"the description has been changed to: {new_desc}"
-
-    # __str__ and __repr__
-    def __str__(self):
-        print(
-            f"The transaction that is conducted is a {self.__transaction_type}, with amount {self.__t_amount}, and the status is {self.__status}"
+    def __eq__(self, other) -> bool:
+        # Two records are the same if every stored value matches.
+        if not isinstance(other, Transaction):
+            return False
+        return (
+            self.__transaction_id == other.transaction_id
+            and self.__transaction_type == other.transaction_type
+            and self.__amount == other.amount
+            and self.__resulting_balance == other.resulting_balance
         )
 
-    def __repr__(self):
-        print(f"transaction id: {self.__transaction_id} \n\
-transaction type: {self.__transaction_type} \n\
-transaction amount: {self.__t_amount} \n\
-transaction description: {self.description}\n\
-status: {self.__status}")
+    def __str__(self) -> str:
+        return (
+            f"#{self.__transaction_id} {self.__transaction_type} of "
+            f"${self.__amount:.2f} ({self.__description}), "
+            f"balance after: ${self.__resulting_balance:.2f}"
+        )
 
-
-class bankWithrawlDeposit:
-    def __init__(
-        self,
-    ) -> None:
-        pass
-
-    # Depositing money
-    def deposit(self, my_account, deposit_amount):
-        if isinstance(deposit_amount, (int, float)):
-            self.balance += deposit_amount
-            print(
-                f"${deposit_amount} has been added to {my_account.acc_type}, new balance: ${my_account.balance}"
-            )
-        else:
-            print(f"incorrect deposit amount, should be int")
-
-    # withdrawl money
-    def withdrawl(self, my_account, withdrawl_amount: int):
-        if (
-            isinstance(withdrawl_amount, (int, float))
-            and my_account.balance >= withdrawl_amount
-        ):
-            my_account.balance -= withdrawl_amount
-            print(
-                f"{withdrawl_amount} has been withdrawn from your account, new balance: ${my_account.balance}"
-            )
-        else:
-            print(f"insufficient Balance, Withdrawl Denied")
-
-    # viewing account balance
-    def view_balance(self, my_account):
-        print(f"Your {my_account.acc_type} account balacne is: ${my_account.acc_type}")
+    def __repr__(self) -> str:
+        return (
+            f"Transaction({self.__transaction_id}, "
+            f"'{self.__transaction_type}', {self.__amount}, "
+            f"{self.__resulting_balance}, '{self.__description}')"
+        )
