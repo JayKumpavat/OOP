@@ -21,3 +21,15 @@ class Necromancer:
         )
         self.__undead = []
         self.__next_unit_id = self.FIRST_UNIT_ID
+
+        @property
+        def name(self) -> str:
+            return self.__name
+
+        @property 
+        def resource_summary(self) -> str:
+            return str(self.__resources)
+
+        @property
+        def army(self) -> list:
+            return list(self.__undead)
