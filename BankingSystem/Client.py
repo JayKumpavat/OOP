@@ -1,106 +1,120 @@
-from Accounts import Account
-from Branch import Branch
+from BankingSystem.Accounts import Account
+from BankingSystem.Branch import Branch
 
 
 class Client:
-    def __init__(
-        self,
-        client_name: str,
-        client_id: int,
-        client_no: int,
-    ):
-        if isinstance(client_name, str):
-            self.__client_name = client_name
-        else:
-            print("Enter a valid name, it must only contain letters")
+    """A bank customer who holds accounts (aggregation) and may choose a
+    preferred branch (association).
+    """
 
-        if isinstance(client_id, int):
+    PHONE_NUMBER_LENGTH = 9
+    MAXIMUM_ID_LENGTH = 9
+
+    def __init__(
+        self, client_name: str, client_id: int, phone_number: int
+    ) -> None:
+        if (
+            isinstance(client_id, int)
+            and 0 < client_id
+            and len(str(client_id)) <= self.MAXIMUM_ID_LENGTH
+        ):
             self.__client_id = client_id
         else:
-            print("Enter a client id that is only numbers and no spaces in between or symbols")
+            print("Invalid client ID, it must be 1 to 9 digits")
+            self.__client_id = 0
 
-        if isinstance(client_no, int) and len(str(client_id)) == 9:
-            self.__client_no = client_no
-        else:
-            print("Enter a valid phone with 9 digits not including 0")
-
+        self.__client_name = "Unknown"
+        self.__phone_number = None
         self.__accounts = []
         self.__preferred_branch = None
 
-    # Displays client information (name, client_id, client_phone_number)
-    def display_client_info(self):
-        print("Client ID:", self.__client_id)
-        print("Client Name:", self.__client_name)
-        print("Client Number:", self.__client_no)
+        self.client_name = client_name
+        self.phone_number = phone_number
 
-    # Adds an existing Account ot this client (aggregation)
-    def add_account(self, account):
-        if not isinstance(account, Account):
-            print("Only Account objects can be added")
-            return
+    @property
+    def client_id(self) -> int:
+        return self.__client_id
 
-        if account in self.__accounts:
-            print("This account has already been added to this client")
-            return
+    @property
+    def client_name(self) -> str:
+        return self.__client_name
 
-        self.__accounts.append(account)
-        print("Account added to client")
+    @client_name.setter
+    def client_name(self, new_name: str) -> None:
+        if isinstance(new_name, str) and new_name.strip() != "":
+            self.__client_name = new_name
+        else:
+            print("Invalid name, it must be a non-empty string")
 
-    # Removes an Account from this client without destroying the account
-    def remove_account(self, account):
-        if account not in self.__accounts:
-            print("This account is not assigned to this client")
-            return
+    @property
+    def phone_number(self) -> int:
+        return self.__phone_number
 
-        self.__accounts.remove(account)
-        print("Account removed from client")
+    @phone_number.setter
+    def phone_number(self, new_number: int) -> None:
+        if (
+            isinstance(new_number, int)
+            and len(str(new_number)) == self.PHONE_NUMBER_LENGTH
+        ):
+            self.__phone_number = new_number
+        else:
+            print("Invalid phone number, it must be 9 digits without the 0")
 
-    def set_preferred_branch(self,branch):
-        if not isinstance(branch, Branch):
-            print("Only Branch Obejects can be set as prefferences")
-            return
-
-        self.__preferred_branch = branch
-        print("Preferred branch has been set")
-
-    def get_preffered_branch(self):
-        return self.__preferred_branch
-
-    def get_accounts(self):
+    @property
+    def accounts(self) -> list:
         return list(self.__accounts)
 
-    # This function allows client to update their phone number
-    def set_change_client_number(self, new_number):
-        if isinstance(new_number, int) and len(str(new_number)) == 9:
-            self.__client_no = new_number
-            print("Client number updated to:", self.__client_no)
-        else:
-            print(f"phone number must have 9 numbers (not including 0)")
+    @property
+    def preferred_branch(self) -> Branch:
+        return self.__preferred_branch
 
-    # Allows bank to change their name
-    def set_client_name(self, new_name):
-        if isinstance(new_name, str):
-            self.__client_name = new_name
-            return f"Name has been changed to {self.__client_name}"
+    @preferred_branch.setter
+    def preferred_branch(self, branch: Branch) -> None:
+        if isinstance(branch, Branch):
+            self.__preferred_branch = branch
         else:
-            print(f"The client name cannot have numbers or symbols, please try again")
+            print("Only Branch objects can be set as the preferred branch")
 
-    # Allows bank to change client_id
-    def set_client_id(self, new_id):
-        if isinstance(new_id, int) and len(str(new_id)) <= 9:
-            self.__client_id = new_id
-            return f"client Id has been changed to: {self.__client_id}"
-        else:
-            print(f"the new client_id must be between 1 - 9 digits")
+    def add_account(self, account: Account) -> bool:
+        # Any subclass of Account is accepted, so the client does not
+        # need separate logic for savings or everyday accounts.
+        if not isinstance(account, Account):
+            print("Only Account objects can be added")
+            return False
+        if account in self.__accounts:
+            print("This account has already been added to this client")
+            return False
+        self.__accounts.append(account)
+        return True
 
-    # str for showing client information in readable form
-    def __str__(self):
-        print(
-            f"Client's Id is {self.__client_id} and client name is {self.__client_name} and their phone number is {self.__client_no}"
+    def remove_account(self, account: Account) -> bool:
+        # The account is only unlinked, it still exists afterwards.
+        if account not in self.__accounts:
+            print("This account is not assigned to this client")
+            return False
+        self.__accounts.remove(account)
+        return True
+
+    def total_balance(self) -> float:
+        total = 0
+        for account in self.__accounts:
+            total += account.balance
+        return total
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Client):
+            return False
+        return self.__client_id == other.client_id
+
+    def __str__(self) -> str:
+        return (
+            f"Client {self.__client_id}: {self.__client_name} "
+            f"(phone 0{self.__phone_number}, "
+            f"{len(self.__accounts)} account(s))"
         )
 
-    # repr to just show important information
-    def __repr__(self):
-        print(f"Client Id: {self.__client_id}\n\
-            Client Name: {self.__client_name}\n\
-            Client Phone Number: {self.__client_no}")
+    def __repr__(self) -> str:
+        return (
+            f"Client('{self.__client_name}', {self.__client_id}, "
+            f"{self.__phone_number})"
+        )
