@@ -1,6 +1,6 @@
-from banking_system.account import Account
-from banking_system.branch import Branch
-from banking_system.client import Client
+from BankingSystem.Accounts import Account
+from BankingSystem.Branch import Branch
+from BankingSystem.Client import Client
 
 
 def print_heading(title: str) -> None:

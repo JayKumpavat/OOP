@@ -1,4 +1,4 @@
-from banking_system.transaction import Transaction
+from BankingSystem.Transactions import Transaction
 
 
 class Account:
