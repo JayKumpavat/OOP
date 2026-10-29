@@ -2,30 +2,33 @@ from BankingSystem.Transactions import Transaction
 
 
 class Account:
-    """A bank account that stores its balance and creates a record for
-    every successful deposit and withdrawal (composition).
+    """The general bank account that every account type is built from.
+
+    Account stores the state shared by all accounts (number, balance and
+    transaction history) and provides the common deposit and withdraw
+    behaviour. Specialised accounts inherit from this class and override
+    withdraw() when they need extra rules.
     """
 
+    ACCOUNT_TYPE = "General"
     MINIMUM_AMOUNT = 0
     FIRST_TRANSACTION_ID = 1
 
-    def __init__(
-        self, acc_number: int, acc_type: str, opening_balance: float
-    ) -> None:
+    def __init__(self, acc_number: int, opening_balance: float) -> None:
         if isinstance(acc_number, int) and acc_number > 0:
             self.__acc_number = acc_number
         else:
             print("Invalid account number, it must be a positive integer")
             self.__acc_number = 0
 
-        self.__acc_type = "General"
-        self.acc_type = acc_type
-
-        if self.__is_valid_amount(opening_balance):
-            self.__balance = opening_balance
+        # The balance is protected so subclasses can read it when
+        # checking their own rules, but it is still only changed through
+        # behaviour.
+        if self._is_valid_amount(opening_balance):
+            self._balance = opening_balance
         else:
             print("Invalid opening balance, the account will start at $0")
-            self.__balance = self.MINIMUM_AMOUNT
+            self._balance = self.MINIMUM_AMOUNT
 
         self.__transactions = []
         self.__next_transaction_id = self.FIRST_TRANSACTION_ID
@@ -35,19 +38,8 @@ class Account:
         return self.__acc_number
 
     @property
-    def acc_type(self) -> str:
-        return self.__acc_type
-
-    @acc_type.setter
-    def acc_type(self, new_type: str) -> None:
-        if isinstance(new_type, str) and new_type.strip() != "":
-            self.__acc_type = new_type
-        else:
-            print("Invalid account type, it must be a non-empty string")
-
-    @property
     def balance(self) -> float:
-        return self.__balance
+        return self._balance
 
     @property
     def transactions(self) -> list:
@@ -56,28 +48,28 @@ class Account:
         return list(self.__transactions)
 
     def deposit(self, amount: float, description: str = "Deposit") -> bool:
-        if not self.__is_valid_amount(amount) or amount == 0:
+        if not self._is_valid_amount(amount) or amount == 0:
             print("Deposit denied, the amount must be a positive number")
             return False
 
-        self.__balance += amount
+        self._balance += amount
         self.__record_transaction("Deposit", amount, description)
         return True
 
     def withdraw(self, amount: float, description: str = "Withdrawal") -> bool:
-        if not self.__is_valid_amount(amount) or amount == 0:
+        if not self._is_valid_amount(amount) or amount == 0:
             print("Withdrawal denied, the amount must be a positive number")
             return False
 
-        if amount > self.__balance:
+        if amount > self._balance:
             print("Withdrawal denied, insufficient balance")
             return False
 
-        self.__balance -= amount
+        self._balance -= amount
         self.__record_transaction("Withdrawal", amount, description)
         return True
 
-    def __is_valid_amount(self, amount) -> bool:
+    def _is_valid_amount(self, amount) -> bool:
         # bool is a subclass of int, so it is excluded on purpose.
         return (
             isinstance(amount, (int, float))
@@ -94,7 +86,7 @@ class Account:
             self.__next_transaction_id,
             transaction_type,
             amount,
-            self.__balance,
+            self._balance,
             description,
         )
         self.__transactions.append(record)
@@ -108,13 +100,13 @@ class Account:
 
     def __str__(self) -> str:
         return (
-            f"{self.__acc_type} account {self.__acc_number} "
-            f"with a balance of ${self.__balance:.2f}"
+            f"{self.ACCOUNT_TYPE} account {self.__acc_number} "
+            f"with a balance of ${self._balance:.2f}"
         )
 
     def __repr__(self) -> str:
         return (
-            f"Account(acc_number={self.__acc_number}, "
-            f"acc_type='{self.__acc_type}', balance={self.__balance}, "
+            f"{type(self).__name__}(acc_number={self.__acc_number}, "
+            f"balance={self._balance}, "
             f"transactions={len(self.__transactions)})"
         )
