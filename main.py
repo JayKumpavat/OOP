@@ -1,63 +1,59 @@
-from NecromancerGame.necromancer import Necromancer
-from NecromancerGame.summoning_ritual import SummoningRitual
+from banking_system.account import Account
+from banking_system.branch import Branch
+from banking_system.client import Client
 
 
 def print_heading(title: str) -> None:
     print(f"\n=== {title} ===")
 
 
-# Each ritual leans on the rune that suits its summon: Bone for
-# skeletons, Spirit for spectres and Flesh for corpses. Stronger summons
-# cost more.
-skeleton_ritual = SummoningRitual(
-    "Rite of Bones", "Undead Skeleton Warrior", 40, 12,
-    bone_cost=4, ectoplasm_cost=1
-)
-ghost_ritual = SummoningRitual(
-    "Wailing Rite", "Vengeful Ghost", 30, 18,
-    necrotic_cost=1, spirit_cost=4, ectoplasm_cost=2
-)
-zombie_ritual = SummoningRitual(
-    "Rite of Rot", "Putrid Zombie", 60, 8,
-    necrotic_cost=1, flesh_cost=5, ectoplasm_cost=1
-)
-guardian_ritual = SummoningRitual(
-    "Oath of the Phantom", "Phantom Guardian", 70, 10,
-    necrotic_cost=2, spirit_cost=4, bone_cost=3, ectoplasm_cost=3
-)
+def print_transactions(account: Account) -> None:
+    print(f"Transactions for account {account.acc_number}:")
+    for record in account.transactions:
+        print(f"  {record}")
 
-morwen = Necromancer("Morwen", necrotic_runes=3, spirit_runes=5,
-                     bone_runes=8, flesh_runes=6, ectoplasm=5)
-print_heading("Starting necromancer")
-print(morwen)
 
-print_heading("Successful summons consume resources")
-for ritual in (skeleton_ritual, ghost_ritual, zombie_ritual):
-    summoned = morwen.summon(ritual)
-    print(f"Summoned: {summoned}")
-    print(f"Resources now: {morwen.resource_summary}")
+# Setup.
+acc1 = Account(1001, "Savings", 500)
+acc2 = Account(1002, "Everyday", 1000)
+client = Client("Alice Smith", 123456789, 412345678)
+branch = Branch(1, "Adelaide CBD", "Adelaide", 812345678)
 
-print_heading("A ritual that cannot be performed yet")
-print("Summon result:", morwen.summon(guardian_ritual))
-print(f"Resources unchanged: {morwen.resource_summary}")
-print(f"Army size: {len(morwen.army)}")
+print_heading("Property syntax replaces getters")
+print(acc1.acc_number, acc1.acc_type, acc1.balance)
+print(client.client_id, client.client_name, client.phone_number)
 
-print_heading("Collect more resources and try again")
-print("Invalid collection:", morwen.collect_resources(spirit_runes=-2))
-morwen.collect_resources(necrotic_runes=4, spirit_runes=6, bone_runes=2,
-                         ectoplasm=4)
-print(f"Resources now: {morwen.resource_summary}")
-print(f"Summoned: {morwen.summon(guardian_ritual)}")
+print_heading("Validated property setters")
+acc1.acc_type = "Fixed Deposit"
+acc1.acc_type = ""
+print(acc1.acc_type)
+client.phone_number = 498765432
+client.phone_number = 12
+print(client.phone_number)
 
-print_heading("Levelling through the necromancer")
-print("Before:", morwen.describe_undead(1))
-morwen.level_undead(1)
-print("After: ", morwen.describe_undead(1))
-print("Level a missing id:", morwen.level_undead(99))
+print_heading("Deposits and withdrawals create transaction records")
+acc1.deposit(250)
+acc1.withdraw(100)
+acc2.withdraw(300, "Rent")
+print_transactions(acc1)
+print_transactions(acc2)
 
-print_heading("Dismissing an undead")
-print("Dismiss #2:", morwen.dismiss(2))
-print("Dismiss #2 again:", morwen.dismiss(2))
+print_heading("Invalid operations create no records")
+print("Negative deposit:", acc1.deposit(-50))
+print("Text deposit:", acc1.deposit("100"))
+print("Overdraw:", acc1.withdraw(5000))
+print(f"Records on acc1: {len(acc1.transactions)}")
 
-print_heading("Final necromancer")
-print(morwen)
+print_heading("Transaction history is read-only")
+history = acc1.transactions
+history.clear()
+print(f"Cleared a copy, account still has {len(acc1.transactions)} records")
+
+print_heading("Aggregation and association still work")
+client.add_account(acc1)
+client.add_account(acc2)
+client.add_account(acc1)
+client.preferred_branch = branch
+print(client)
+print(client.preferred_branch)
+print(f"Total balance: ${client.total_balance():.2f}")
