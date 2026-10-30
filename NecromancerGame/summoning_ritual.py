@@ -2,25 +2,26 @@ from NecromancerGame.resource_pool import ResourcePool
 from NecromancerGame.undead import Undead
 
 class SummoningRitual:
+    """Describes what a ritual costs and which undead it creates.
+
+    The ritual knows its own requirements, but it never changes resource
+    quantities itself. It asks the ResourcePool to check and spend them.
+    """
+
     MIN_ECTOPLASM_COST = 1
 
     def __init__(
-        self, 
+        self,
         ritual_name: str,
-        summon_name: str,
-        starting_health: int,
-        starting_power: int,
+        summon_class,
         necrotic_cost: int = 0,
         spirit_cost: int = 0,
         bone_cost: int = 0,
         flesh_cost: int = 0,
-        ectoplasm_cost: int = MIN_ECTOPLASM_COST
-        ) -> None:
-
+        ectoplasm_cost: int = MIN_ECTOPLASM_COST,
+    ) -> None:
         self.__ritual_name = ritual_name
-        self.__summon_name = summon_name
-        self.__starting_health = starting_health
-        self.__starting_power = starting_power
+        self.__summon_class = summon_class
         self.__necrotic_cost = necrotic_cost
         self.__spirit_cost = spirit_cost
         self.__bone_cost = bone_cost
@@ -42,15 +43,7 @@ class SummoningRitual:
 
     @property
     def summon_name(self) -> str:
-        return self.__summon_name
-
-    @property
-    def starting_health(self) -> int:
-        return self.__starting_health
-
-    @property
-    def starting_power(self) -> int:
-        return self.__starting_power
+        return self.__summon_class.SUMMON_NAME
 
     @property
     def necrotic_cost(self) -> int:
@@ -90,16 +83,12 @@ class SummoningRitual:
         )
 
     def create_summon(self, unit_id: int) -> Undead:
-        return Undead(
-            unit_id, self.__summon_name, self.__starting_health, 
-            self.__starting_power
-        )
-    
+        return self.__summon_class(unit_id)
+
     def __str__(self) -> str:
         return (
-            f"{self.__ritual_name} -> {self.__summon_name} "
-            f"(HP {self.__starting_health}, PWR {self.__starting_power}) | "
-            f"Cost: Necrotic {self.__necrotic_cost}, "
-            f"Spirit {self.__spirit_cost}, Bone {self.__bone_cost}, "
-            f"Flesh {self.__flesh_cost}, Ectoplasm {self.__ectoplasm_cost}"
+            f"{self.__ritual_name} -> {self.summon_name} | Cost: "
+            f"Necrotic {self.__necrotic_cost}, Spirit {self.__spirit_cost}, "
+            f"Bone {self.__bone_cost}, Flesh {self.__flesh_cost}, "
+            f"Ectoplasm {self.__ectoplasm_cost}"
         )
