@@ -20,3 +20,6 @@ class WarriorUndead(Undead):
             f"{super().command()} It charges in and strikes with its "
             f"blade for {self._power} damage."
         )
+
+    def combat_style(self) -> str:
+        return "Martial - direct melee combat with weapon and armour"
