@@ -79,3 +79,6 @@ class Undead:
             f"{self.MAX_LEVEL}) HP {self._health}/{self.MAX_HEALTH} "
             f"PWR {self._power}/{self.MAX_POWER}"
         )
+        
+    def combat_style(self) -> str:
+        return "Cursed - supernatural attacks that drain life from afar"
