@@ -1,6 +1,8 @@
-from BankingSystem.Accounts import Account
-from BankingSystem.Branch import Branch
-from BankingSystem.Client import Client
+from banking_system.account import Account
+from banking_system.branch import Branch
+from banking_system.client import Client
+from banking_system.everyday_account import EverydayAccount
+from banking_system.savings_account import SavingsAccount
 
 
 def print_heading(title: str) -> None:
@@ -14,46 +16,66 @@ def print_transactions(account: Account) -> None:
 
 
 # Setup.
-acc1 = Account(1001, "Savings", 500)
-acc2 = Account(1002, "Everyday", 1000)
+savings = SavingsAccount(1001, 500, 0.025)
+everyday = EverydayAccount(1002, 2000, "4111222233334444")
 client = Client("Alice Smith", 123456789, 412345678)
-branch = Branch(1, "Adelaide CBD", "Adelaide", 812345678)
+adelaide_branch = Branch(1, "Adelaide CBD", "Adelaide", 812345678)
+glenelg_branch = Branch(2, "Glenelg", "Glenelg", 812345679)
 
-print_heading("Property syntax replaces getters")
-print(acc1.acc_number, acc1.acc_type, acc1.balance)
-print(client.client_id, client.client_name, client.phone_number)
-
-print_heading("Validated property setters")
-acc1.acc_type = "Fixed Deposit"
-acc1.acc_type = ""
-print(acc1.acc_type)
+print_heading("Properties (read-only and validated)")
+print(savings.acc_number, savings.balance, savings.interest_rate)
+print(everyday.masked_card_number)
 client.phone_number = 498765432
+print(client.phone_number)
 client.phone_number = 12
 print(client.phone_number)
 
-print_heading("Deposits and withdrawals create transaction records")
-acc1.deposit(250)
-acc1.withdraw(100)
-acc2.withdraw(300, "Rent")
-print_transactions(acc1)
-print_transactions(acc2)
+print_heading("Client aggregation with different account types")
+client.add_account(savings)
+client.add_account(everyday)
+client.add_account(savings)
+for account in client.accounts:
+    print(account)
+print(f"Total balance: ${client.total_balance():.2f}")
+
+print_heading("Inherited deposit behaviour")
+savings.deposit(250)
+everyday.deposit(100)
+print(savings)
+print(everyday)
+
+print_heading("Overridden withdraw behaviour")
+print("Valid savings withdrawal:", savings.withdraw(300))
+print("Savings below minimum:", savings.withdraw(400))
+print("Valid everyday withdrawal:", everyday.withdraw(800))
+print("Everyday above limit:", everyday.withdraw(1500))
 
 print_heading("Invalid operations create no records")
-print("Negative deposit:", acc1.deposit(-50))
-print("Text deposit:", acc1.deposit("100"))
-print("Overdraw:", acc1.withdraw(5000))
-print(f"Records on acc1: {len(acc1.transactions)}")
+print("Negative deposit:", everyday.deposit(-50))
+print("Text withdrawal:", everyday.withdraw("100"))
+savings.apply_interest()
+print_transactions(savings)
+print_transactions(everyday)
 
-print_heading("Transaction history is read-only")
-history = acc1.transactions
-history.clear()
-print(f"Cleared a copy, account still has {len(acc1.transactions)} records")
+print_heading("isinstance() with the hierarchy")
+print("Savings is an Account:", isinstance(savings, Account))
+print("Everyday is an Account:", isinstance(everyday, Account))
+print("Savings is a SavingsAccount:", isinstance(savings, SavingsAccount))
+print("Savings is an EverydayAccount:", isinstance(savings, EverydayAccount))
+print("Concrete types:", type(savings).__name__, type(everyday).__name__)
 
-print_heading("Aggregation and association still work")
-client.add_account(acc1)
-client.add_account(acc2)
-client.add_account(acc1)
-client.preferred_branch = branch
-print(client)
+print_heading("Association with a branch")
+client.preferred_branch = adelaide_branch
+client.preferred_branch = "not a branch"
 print(client.preferred_branch)
-print(f"Total balance: ${client.total_balance():.2f}")
+client.preferred_branch = glenelg_branch
+glenelg_branch.open_branch()
+glenelg_branch.open_branch()
+glenelg_branch.add_feedback("Friendly staff and short queues.")
+print(client.preferred_branch)
+print(glenelg_branch.feedback)
+
+print_heading("Removing an account keeps it alive")
+client.remove_account(everyday)
+print(client)
+print(everyday)
