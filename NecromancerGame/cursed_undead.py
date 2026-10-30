@@ -21,3 +21,6 @@ class CursedUndead(Undead):
             f"{super().command()} It casts a withering curse for "
             f"{self._power} damage."
         )
+    
+    def combat_style(self) -> str:
+        return "Cursed - supernatural attacks that drain life from afar"
