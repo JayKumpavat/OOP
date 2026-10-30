@@ -1,5 +1,5 @@
-from NecromancerGame.resource_pool import ResourcePool
-from NecromancerGame.undead import Undead
+from necromancy_game.resource_pool import ResourcePool
+from necromancy_game.undead import Undead
 
 class SummoningRitual:
     """Describes what a ritual costs and which undead it creates.

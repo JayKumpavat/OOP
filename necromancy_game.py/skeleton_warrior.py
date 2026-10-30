@@ -1,4 +1,4 @@
-from NecromancerGame.warrior import WarriorUndead
+from necromancy_game.warrior import WarriorUndead
 
 
 class SkeletonWarrior(WarriorUndead):

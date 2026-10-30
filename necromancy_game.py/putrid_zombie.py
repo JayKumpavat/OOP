@@ -1,4 +1,4 @@
-from NecromancerGame.undead import Undead
+from necromancy_game.undead import Undead
 
 
 class PutridZombie(Undead):

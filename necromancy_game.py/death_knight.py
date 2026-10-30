@@ -1,5 +1,5 @@
-from NecromancerGame.cursed_undead import CursedUndead
-from NecromancerGame.warrior import WarriorUndead
+from necromancy_game.cursed_undead import CursedUndead
+from necromancy_game.warrior import WarriorUndead
 
 
 class DeathKnight(WarriorUndead, CursedUndead):
