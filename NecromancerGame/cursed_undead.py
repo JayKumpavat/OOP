@@ -1,4 +1,4 @@
-from necromancy_game.undead import Undead
+from NecromancerGame.undead import Undead
 
 
 class CursedUndead(Undead):

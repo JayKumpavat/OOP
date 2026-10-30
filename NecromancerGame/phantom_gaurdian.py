@@ -1,4 +1,4 @@
-from necromancy_game.warrior_undead import WarriorUndead
+from NecromancerGame.warrior import WarriorUndead
 
 
 class PhantomGuardian(WarriorUndead):
