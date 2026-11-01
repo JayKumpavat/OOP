@@ -1,0 +1,70 @@
+from gym_tracker.person import Person
+from gym_tracker.trainer import Trainer
+from gym_tracker.workout import Workout
+
+
+class Member(Person):
+    """A gym member who logs workouts and can be coached by a trainer.
+
+    The member creates and owns their workouts (composition) and holds a
+    reference to at most one trainer (association).
+    """
+
+    def __init__(self, name: str, person_id: int, goal: str) -> None:
+        super().__init__(name, person_id)
+        self.__goal = goal
+        self.__workouts = []
+        self.__trainer = None
+
+    @property
+    def goal(self) -> str:
+        return self.__goal
+
+    @property
+    def workouts(self) -> list:
+        return list(self.__workouts)
+
+    @property
+    def trainer(self) -> Trainer:
+        return self.__trainer
+
+    def start_workout(self, title: str, date: str) -> Workout:
+        workout = Workout(title, date)
+        self.__workouts.append(workout)
+        return workout
+
+    def assign_trainer(self, trainer: Trainer) -> bool:
+        if not isinstance(trainer, Trainer):
+            print("Only a Trainer can be assigned")
+            return False
+        if trainer == self.__trainer:
+            print(f"{trainer.name} already coaches {self.name}")
+            return False
+        if not trainer.take_on_client():
+            return False
+        # The old trainer frees up a spot before the new one is linked.
+        if self.__trainer is not None:
+            self.__trainer.release_client()
+        self.__trainer = trainer
+        return True
+
+    def total_calories(self) -> float:
+        total = 0
+        for workout in self.__workouts:
+            if workout.completed:
+                total += workout.total_calories()
+        return total
+
+    def completed_workout_count(self) -> int:
+        count = 0
+        for workout in self.__workouts:
+            if workout.completed:
+                count += 1
+        return count
+
+    def role_summary(self) -> str:
+        coach = self.__trainer.name if self.__trainer else "no trainer"
+        return (
+            f"Member, goal: {self.__goal}, coached by {coach}, "
+            f"{self.completed_workout_count()} workout(s) done"
+        )
