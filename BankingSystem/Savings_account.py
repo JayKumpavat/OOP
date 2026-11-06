@@ -1,4 +1,5 @@
-from BankingSystem.Accounts import Account
+from banking_system.account import Account
+
 
 class SavingsAccount(Account):
     """An account that earns interest and keeps a minimum balance."""
@@ -42,6 +43,10 @@ class SavingsAccount(Account):
         return self.deposit(
             interest, f"Interest at {self.__interest_rate * 100:.1f}%"
         )
+
+    def month_end(self) -> bool:
+        # Savings accounts earn interest at the end of each month.
+        return self.apply_interest()
 
     def __str__(self) -> str:
         return (
