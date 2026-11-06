@@ -1,13 +1,16 @@
-from BankingSystem.Transactions import Transaction
+from abc import ABC, abstractmethod
+
+from banking_system.transaction import Transaction
 
 
-class Account:
+class Account(ABC):
     """The general bank account that every account type is built from.
 
-    Account stores the state shared by all accounts (number, balance and
-    transaction history) and provides the common deposit and withdraw
-    behaviour. Specialised accounts inherit from this class and override
-    withdraw() when they need extra rules.
+    Account stores the state shared by all accounts (number, balance
+    and transaction history) and provides the common deposit and
+    withdraw behaviour. It is abstract because the bank only opens
+    specific kinds of account, and each kind must decide what happens
+    at the end of the month.
     """
 
     ACCOUNT_TYPE = "General"
@@ -47,6 +50,34 @@ class Account:
         # from outside the account.
         return list(self.__transactions)
 
+    def transaction_count(self) -> int:
+        return len(self.__transactions)
+
+    def transactions_of_type(self, transaction_type: str) -> list:
+        # A list comprehension filters the history but keeps the order
+        # the records were made in.
+        return [
+            record for record in self.__transactions
+            if record.transaction_type == transaction_type
+        ]
+
+    def transactions_above(self, amount: float) -> list:
+        return [
+            record for record in self.__transactions
+            if record.amount > amount
+        ]
+
+    def statement(self) -> str:
+        lines = [f"Statement for {self}"]
+        lines += [f"  {record}" for record in self.__transactions]
+        if not self.__transactions:
+            lines.append("  No transactions yet")
+        return "\n".join(lines)
+
+    @abstractmethod
+    def month_end(self) -> bool:
+        pass
+
     def deposit(self, amount: float, description: str = "Deposit") -> bool:
         if not self._is_valid_amount(amount) or amount == 0:
             print("Deposit denied, the amount must be a positive number")
@@ -70,7 +101,8 @@ class Account:
         return True
 
     def _is_valid_amount(self, amount) -> bool:
-        # bool is a subclass of int, so it is excluded on purpose.
+        # The bool type is a subclass of int, so it is excluded on
+        # purpose.
         return (
             isinstance(amount, (int, float))
             and not isinstance(amount, bool)
