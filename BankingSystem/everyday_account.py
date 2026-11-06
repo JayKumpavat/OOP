@@ -1,6 +1,5 @@
 from BankingSystem.Accounts import Account
 
-
 class EverydayAccount(Account):
     """A transaction account with a linked debit card and a limit on
     each single withdrawal.
@@ -8,6 +7,8 @@ class EverydayAccount(Account):
 
     ACCOUNT_TYPE = "Everyday"
     MAXIMUM_WITHDRAWAL = 1000
+    MONTHLY_FEE = 5
+    FEE_FREE_BALANCE = 2000
     CARD_NUMBER_LENGTH = 16
 
     def __init__(
@@ -40,6 +41,13 @@ class EverydayAccount(Account):
             )
             return False
         return super().withdraw(amount, description)
+
+    def month_end(self) -> bool:
+        # Everyday accounts pay a small fee unless the balance is high
+        # enough to have it waived.
+        if self._balance >= self.FEE_FREE_BALANCE:
+            return False
+        return self.withdraw(self.MONTHLY_FEE, "Monthly account fee")
 
     def __str__(self) -> str:
         return f"{super().__str__()} (card {self.masked_card_number})"
