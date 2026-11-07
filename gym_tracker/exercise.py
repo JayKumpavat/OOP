@@ -12,8 +12,11 @@ class Exercise(ABC):
 
     MIN_SETS = 1
     MAX_SETS = 10
+    MUSCLE_GROUPS = {
+        "chest", "back", "shoulders", "arms", "core", "legs", "glutes",
+    }
 
-    def __init__(self, name: str, sets: int) -> None:
+    def __init__(self, name: str, sets: int, muscle_groups=()) -> None:
         if isinstance(name, str) and name.strip() != "":
             self.__name = name.strip()
         else:
@@ -26,6 +29,12 @@ class Exercise(ABC):
             print(f"Invalid sets for {self.__name}, using {self.MIN_SETS}")
             self._sets = self.MIN_SETS
 
+        # A set is used because a muscle is either targeted or not, so
+        # duplicates have no meaning and membership checks are fast.
+        self.__muscle_groups = set()
+        for muscle in muscle_groups:
+            self.add_muscle_group(muscle)
+
     @property
     def name(self) -> str:
         return self.__name
@@ -33,6 +42,25 @@ class Exercise(ABC):
     @property
     def sets(self) -> int:
         return self._sets
+
+    @property
+    def muscle_groups(self) -> set:
+        # A copy is returned so the set cannot be changed from outside.
+        return set(self.__muscle_groups)
+
+    def add_muscle_group(self, muscle: str) -> bool:
+        if not isinstance(muscle, str):
+            print("Muscle groups must be given as text")
+            return False
+        muscle = muscle.strip().lower()
+        if muscle not in self.MUSCLE_GROUPS:
+            print(f"'{muscle}' is not a recognised muscle group")
+            return False
+        self.__muscle_groups.add(muscle)
+        return True
+
+    def targets(self, muscle: str) -> bool:
+        return muscle in self.__muscle_groups
 
     @abstractmethod
     def calculate_calories(self) -> float:
