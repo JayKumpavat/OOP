@@ -13,8 +13,10 @@ class MobilityExercise(Exercise):
     CALORIES_PER_MINUTE = 2.5
     SECONDS_PER_MINUTE = 60
 
-    def __init__(self, name: str, sets: int, hold_seconds: int) -> None:
-        super().__init__(name, sets)
+    def __init__(
+        self, name: str, sets: int, hold_seconds: int, muscle_groups=()
+    ) -> None:
+        super().__init__(name, sets, muscle_groups)
 
         if (
             isinstance(hold_seconds, int)
