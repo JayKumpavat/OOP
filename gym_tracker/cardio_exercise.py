@@ -13,9 +13,10 @@ class CardioExercise(Exercise, Progressable):
     CALORIES_PER_MINUTE = 5
 
     def __init__(
-        self, name: str, sets: int, minutes_per_set: int, intensity: int
+        self, name: str, sets: int, minutes_per_set: int, intensity: int,
+        muscle_groups=()
     ) -> None:
-        super().__init__(name, sets)
+        super().__init__(name, sets, muscle_groups)
 
         if (
             isinstance(minutes_per_set, int)
