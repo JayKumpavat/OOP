@@ -13,9 +13,10 @@ class StrengthExercise(Exercise, Progressable):
     WEIGHT_FACTOR = 100
 
     def __init__(
-        self, name: str, sets: int, reps: int, weight_kg: float
+        self, name: str, sets: int, reps: int, weight_kg: float,
+        muscle_groups=()
     ) -> None:
-        super().__init__(name, sets)
+        super().__init__(name, sets, muscle_groups)
 
         if isinstance(reps, int) and self.MIN_REPS <= reps <= self.MAX_REPS:
             self.__reps = reps
