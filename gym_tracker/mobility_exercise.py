@@ -29,10 +29,6 @@ class MobilityExercise(Exercise):
                   f"{self.MIN_HOLD_SECONDS}s")
             self.__hold_seconds = self.MIN_HOLD_SECONDS
 
-    @property
-    def hold_seconds(self) -> int:
-        return self.__hold_seconds
-
     def calculate_calories(self) -> float:
         minutes = self._sets * self.__hold_seconds / self.SECONDS_PER_MINUTE
         return minutes * self.CALORIES_PER_MINUTE
