@@ -66,6 +66,23 @@ class Workout:
             total += exercise.calculate_calories()
         return total
 
+    def muscles_trained(self) -> set:
+        # Union of every exercise's muscle groups, so each muscle
+        # appears once however many exercises target it.
+        return {
+            muscle
+            for exercise in self.__exercises
+            for muscle in exercise.muscle_groups
+        }
+
+    def shared_muscles(self, other: "Workout") -> set:
+        # Intersection shows which muscles two sessions both worked,
+        # which helps spot training the same area two days in a row.
+        if not isinstance(other, Workout):
+            print("Can only compare with another Workout")
+            return set()
+        return self.muscles_trained() & other.muscles_trained()
+
     def progress_exercises(self) -> list:
         # Only exercises that implement the Progressable interface are
         # asked to progress.
