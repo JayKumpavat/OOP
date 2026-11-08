@@ -16,10 +16,6 @@ class Gym:
         self.__trainers = {}
 
     @property
-    def name(self) -> str:
-        return self.__name
-
-    @property
     def members(self) -> dict:
         # A copy is returned so outside code cannot add or remove
         # members without going through the gym's rules.
