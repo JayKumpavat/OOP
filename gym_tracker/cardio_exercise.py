@@ -37,14 +37,6 @@ class CardioExercise(Exercise, Progressable):
             print(f"Invalid intensity for {self.name}, using low")
             self.__intensity = self.LOW_INTENSITY
 
-    @property
-    def minutes_per_set(self) -> int:
-        return self.__minutes_per_set
-
-    @property
-    def intensity(self) -> int:
-        return self.__intensity
-
     def total_minutes(self) -> int:
         return self._sets * self.__minutes_per_set
 
