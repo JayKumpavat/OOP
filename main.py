@@ -80,113 +80,119 @@
 # print(client)
 # print(everyday)
 
-from necromancy_game.cursed_undead import CursedUndead
-from necromancy_game.death_knight import DeathKnight
-from necromancy_game.necromancer import Necromancer
-from necromancy_game.phantom_guardian import PhantomGuardian
-from necromancy_game.putrid_zombie import PutridZombie
-from necromancy_game.skeleton_warrior import SkeletonWarrior
-from necromancy_game.summoning_ritual import SummoningRitual
-from necromancy_game.undead import Undead
-from necromancy_game.vengeful_ghost import VengefulGhost
-from necromancy_game.warrior_undead import WarriorUndead
+from gym_tracker.cardio_exercise import CardioExercise
+from gym_tracker.exercise import Exercise
+from gym_tracker.gym import Gym
+from gym_tracker.member import Member
+from gym_tracker.mobility_exercise import MobilityExercise
+from gym_tracker.progressable import Progressable
+from gym_tracker.strength_exercise import StrengthExercise
+from gym_tracker.trainer import Trainer
 
 
 def print_heading(title: str) -> None:
     print(f"\n=== {title} ===")
 
 
-# Each ritual leans on the rune that suits its summon: Bone for
-# skeletons, Spirit for spectres and Flesh for corpses.
-skeleton_ritual = SummoningRitual(
-    "Rite of Bones", SkeletonWarrior, bone_cost=4, ectoplasm_cost=1
-)
-ghost_ritual = SummoningRitual(
-    "Wailing Rite", VengefulGhost, necrotic_cost=1, spirit_cost=4,
-    ectoplasm_cost=2
-)
-zombie_ritual = SummoningRitual(
-    "Rite of Rot", PutridZombie, necrotic_cost=1, flesh_cost=5,
-    ectoplasm_cost=1
-)
-guardian_ritual = SummoningRitual(
-    "Oath of the Phantom", PhantomGuardian, necrotic_cost=2,
-    spirit_cost=4, bone_cost=3, ectoplasm_cost=3
-)
-death_knight_ritual = SummoningRitual(
-    "Rite of the Fallen Knight", DeathKnight, necrotic_cost=5,
-    spirit_cost=5, bone_cost=5, flesh_cost=5, ectoplasm_cost=6
-)
-broken_ritual = SummoningRitual("Rite Without Ectoplasm", SkeletonWarrior,
-                                bone_cost=1, ectoplasm_cost=0)
+# Exercises exist independently so they can be reused across workouts.
+bench_press = StrengthExercise("Bench Press", 4, 8, 60,
+                               ["chest", "arms", "shoulders"])
+squat = StrengthExercise("Back Squat", 5, 5, 80, ["legs", "glutes", "core"])
+deadlift = StrengthExercise("Deadlift", 3, 5, 100,
+                            ["back", "legs", "glutes"])
+treadmill = CardioExercise("Treadmill Run", 1, 20, 2, ["legs"])
+rower = CardioExercise("Rowing Intervals", 4, 3, 3, ["back", "legs", "arms"])
+hamstring_stretch = MobilityExercise("Hamstring Stretch", 3, 30, ["legs"])
 
-print_heading("Rituals")
-for ritual in (skeleton_ritual, ghost_ritual, zombie_ritual,
-               guardian_ritual, death_knight_ritual, broken_ritual):
-    print(ritual)
+jay = Member("Jay", 101, "Build strength")
+sam = Member("Sam", 102, "Improve fitness")
+mia = Member("Mia", 103, "Run a half marathon")
+coach_lee = Trainer("Lee", 201, "Powerlifting")
+coach_ava = Trainer("Ava", 202, "Endurance")
 
-morwen = Necromancer("Morwen", necrotic_runes=6, spirit_runes=8,
-                     bone_runes=10, flesh_runes=6, ectoplasm=8)
-print_heading("Starting necromancer")
-print(morwen)
+print_heading("Abstract classes cannot be created directly")
+print("Abstract methods on Exercise:",
+      sorted(Exercise.__abstractmethods__))
+print("StrengthExercise is an Exercise:",
+      isinstance(bench_press, Exercise))
+print("StrengthExercise is Progressable:",
+      isinstance(bench_press, Progressable))
+print("MobilityExercise is Progressable:",
+      isinstance(hamstring_stretch, Progressable))
 
-print_heading("Successful summons consume resources")
-for ritual in (skeleton_ritual, ghost_ritual, zombie_ritual):
-    summoned = morwen.summon(ritual)
-    print(f"Summoned: {summoned}")
-    print(f"Resources now: {morwen.resource_summary}")
+print_heading("Validation")
+bad_lift = StrengthExercise("Bad Lift", 20, 50, -10, ["chest", "wings"])
+print(bad_lift)
 
-print_heading("A ritual that cannot be performed yet")
-print("Summon result:", morwen.summon(death_knight_ritual))
-print(f"Resources unchanged: {morwen.resource_summary}")
-print(f"Army size: {len(morwen.army)}")
+print_heading("Dictionary: registering people with the gym")
+gym = Gym("Northside Strength Club")
+for member in (jay, sam, mia):
+    gym.register_member(member)
+gym.register_member(Member("Jay Copy", 101, "Duplicate id"))
+gym.register_trainer(coach_lee)
+gym.register_trainer(coach_ava)
+print(gym)
+print("Member ids:", sorted(gym.members))
+print("Is 102 a member?", gym.is_member(102))
+print("Is 999 a member?", gym.is_member(999))
+print("Look up 103:", gym.find_member(103))
 
-print_heading("Collect more resources and try again")
-print("Invalid collection:", morwen.collect_resources(bone_runes=-5))
-morwen.collect_resources(necrotic_runes=10, spirit_runes=10, bone_runes=5,
-                         flesh_runes=5, ectoplasm=10)
-print(f"Resources now: {morwen.resource_summary}")
-death_knight = morwen.summon(death_knight_ritual)
-print(f"Summoned: {death_knight}")
+print_heading("Dictionary: assigning trainers by id")
+gym.assign_trainer(101, 201)
+gym.assign_trainer(102, 202)
+gym.assign_trainer(103, 202)
+gym.assign_trainer(999, 201)
+for person in (coach_lee, coach_ava):
+    print(person)
+coached = gym.members_coached_by(202)
+print("Coached by Ava:", [member.name for member in coached])
 
-print_heading("Inheritance checks")
-for undead in morwen.army:
-    print(
-        f"{undead.name}: Undead={isinstance(undead, Undead)}, "
-        f"Warrior={isinstance(undead, WarriorUndead)}, "
-        f"Cursed={isinstance(undead, CursedUndead)}, "
-        f"type={type(undead).__name__}"
-    )
+print_heading("Composition: members create their own workouts")
+push_day = jay.start_workout("Push Day", "2026-10-20")
+push_day.add_exercise(bench_press)
+push_day.add_exercise(treadmill)
+push_day.add_exercise(hamstring_stretch)
+push_day.add_exercise(StrengthExercise("bench press", 3, 10, 50))
+push_day.add_exercise("not an exercise")
+print(push_day)
 
-print_heading("Death Knight MRO")
-print(" -> ".join(cls.__name__ for cls in DeathKnight.mro()))
+print_heading("Polymorphic calories across different exercise types")
+for exercise in push_day.exercises:
+    print(f"{type(exercise).__name__:<17}"
+          f"{exercise.calculate_calories():>7.1f} kcal")
+push_day.complete()
+print("After Push Day Jay still needs:", sorted(jay.untrained_muscles()))
 
-print_heading("Ambiguous combat_style() resolved by super()")
-print(death_knight.combat_style())
+print_heading("Progressive overload through the interface")
+leg_day = jay.start_workout("Leg Day", "2026-10-22")
+leg_day.add_exercise(squat)
+leg_day.add_exercise(rower)
+leg_day.add_exercise(hamstring_stretch)
+for result in leg_day.progress_exercises():
+    print(result)
+leg_day.complete()
 
-print_heading("Explicit parent class method calls")
-print(death_knight.compare_combat_styles())
+print_heading("Set: muscle groups")
+print("Bench press targets chest?", bench_press.targets("chest"))
+print("Push Day muscles:", sorted(push_day.muscles_trained()))
+print("Leg Day muscles: ", sorted(leg_day.muscles_trained()))
+print("Worked in both:  ", sorted(push_day.shared_muscles(leg_day)))
+print(f"Jay has logged {len(jay.workouts)} workouts")
+print("Jay has trained: ", sorted(jay.muscles_trained()))
+print("Jay still needs: ", sorted(jay.untrained_muscles()) or "nothing")
 
-print_heading("Overridden command() across the army")
-for order in morwen.command_army():
-    print(order)
-print(f"Death Knight battles fought: {death_knight.battles_fought}, "
-      f"curses cast: {death_knight.curses_cast}")
+run_day = mia.start_workout("Long Run", "2026-10-23")
+run_day.add_exercise(treadmill)
+run_day.add_exercise(deadlift)
+run_day.complete()
 
-print_heading("Levelling through the necromancer")
-print("Before:", morwen.describe_undead(death_knight.unit_id))
-morwen.level_undead(death_knight.unit_id)
-print("After: ", morwen.describe_undead(death_knight.unit_id))
-print("Before:", morwen.describe_undead(1))
-for attempt in range(12):
-    morwen.level_undead(1)
-print("After: ", morwen.describe_undead(1))
+print_heading("Dictionary: calories by member")
+for name, calories in gym.calories_by_member().items():
+    print(f"{name:<5}{calories:>8.1f} kcal")
 
-print_heading("Dismissing an undead")
-print("Dismiss #2:", morwen.dismiss(2))
-print("Dismiss #2 again:", morwen.dismiss(2))
-print(morwen.command_undead(2))
-
-print_heading("Final necromancer")
-morwen.summon(guardian_ritual)
-print(morwen)
+print_heading("Removing a member frees their trainer's spot")
+print(f"Ava coaches {coach_ava.client_count} member(s)")
+gym.remove_member(103)
+gym.remove_member(103)
+print(f"Ava now coaches {coach_ava.client_count} member(s)")
+print(gym)
