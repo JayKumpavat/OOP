@@ -18,10 +18,6 @@ class Member(Person):
         self.__trainer = None
 
     @property
-    def goal(self) -> str:
-        return self.__goal
-
-    @property
     def workouts(self) -> list:
         return list(self.__workouts)
 
