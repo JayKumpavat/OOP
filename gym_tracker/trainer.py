@@ -12,10 +12,6 @@ class Trainer(Person):
         self.__client_count = 0
 
     @property
-    def specialty(self) -> str:
-        return self.__specialty
-
-    @property
     def client_count(self) -> int:
         return self.__client_count
 
