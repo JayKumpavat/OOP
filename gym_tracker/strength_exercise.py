@@ -33,14 +33,6 @@ class StrengthExercise(Exercise, Progressable):
             print(f"Invalid weight for {self.name}, using bodyweight (0kg)")
             self.__weight_kg = 0
 
-    @property
-    def reps(self) -> int:
-        return self.__reps
-
-    @property
-    def weight_kg(self) -> float:
-        return self.__weight_kg
-
     def volume(self) -> float:
         # Training volume is the total weight moved in the exercise.
         return self._sets * self.__reps * self.__weight_kg
