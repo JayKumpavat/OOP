@@ -40,10 +40,6 @@ class Exercise(ABC):
         return self.__name
 
     @property
-    def sets(self) -> int:
-        return self._sets
-
-    @property
     def muscle_groups(self) -> set:
         # A copy is returned so the set cannot be changed from outside.
         return set(self.__muscle_groups)
