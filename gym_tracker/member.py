@@ -1,3 +1,4 @@
+from gym_tracker.exercise import Exercise
 from gym_tracker.person import Person
 from gym_tracker.trainer import Trainer
 from gym_tracker.workout import Workout
@@ -47,6 +48,25 @@ class Member(Person):
             self.__trainer.release_client()
         self.__trainer = trainer
         return True
+
+    def remove_trainer(self) -> bool:
+        if self.__trainer is None:
+            return False
+        self.__trainer.release_client()
+        self.__trainer = None
+        return True
+
+    def muscles_trained(self) -> set:
+        trained = set()
+        for workout in self.__workouts:
+            if workout.completed:
+                trained |= workout.muscles_trained()
+        return trained
+
+    def untrained_muscles(self) -> set:
+        # Difference between every muscle group and the ones already
+        # trained shows what to plan for next.
+        return Exercise.MUSCLE_GROUPS - self.muscles_trained()
 
     def total_calories(self) -> float:
         total = 0
