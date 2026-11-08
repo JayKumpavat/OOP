@@ -20,14 +20,6 @@ class Workout:
         self.__completed = False
 
     @property
-    def title(self) -> str:
-        return self.__title
-
-    @property
-    def date(self) -> str:
-        return self.__date
-
-    @property
     def exercises(self) -> list:
         return list(self.__exercises)
 
