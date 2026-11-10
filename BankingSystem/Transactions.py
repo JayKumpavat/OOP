@@ -36,10 +36,6 @@ class Transaction:
     def resulting_balance(self) -> float:
         return self.__resulting_balance
 
-    @property
-    def description(self) -> str:
-        return self.__description
-
     def __eq__(self, other) -> bool:
         # Two records are the same if every stored value matches.
         if not isinstance(other, Transaction):
