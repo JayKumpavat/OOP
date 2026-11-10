@@ -1,4 +1,4 @@
-from BankingSystem.Accounts import Account
+from banking_system.Accounts import Account
 
 class EverydayAccount(Account):
     """A transaction account with a linked debit card and a limit on

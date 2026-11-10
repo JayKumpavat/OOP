@@ -71,10 +71,6 @@ class Branch:
             print("Invalid phone number, it must be 9 digits without the 0")
 
     @property
-    def status(self) -> str:
-        return self.__status
-
-    @property
     def feedback(self) -> list:
         return list(self.__feedback)
 
