@@ -1,5 +1,5 @@
-from banking_system.Accounts import Account
-from banking_system.Branch import Branch
+from banking_system.account import Account
+from banking_system.branch import Branch
 
 
 class Client:
