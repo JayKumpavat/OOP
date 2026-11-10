@@ -1,0 +1,8 @@
+[run]
+branch = True
+source = gym_tracker
+
+[report]
+show_missing = True
+exclude_also =
+    @abstractmethod
