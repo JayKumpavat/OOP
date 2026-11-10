@@ -1,0 +1,9 @@
+[run]
+branch = True
+source = gym_tracker
+
+[report]
+show_missing = True
+# Abstract method bodies can never run, so they are not counted.
+exclude_also =
+    @abstractmethod
