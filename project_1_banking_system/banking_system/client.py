@@ -5,6 +5,10 @@ from banking_system.branch import Branch
 class Client:
     """A bank customer who holds accounts (aggregation) and may choose a
     preferred branch (association).
+
+    Accounts are kept in a dictionary keyed by account number, because
+    every account number is unique and the client looks accounts up by
+    number rather than by position.
     """
 
     PHONE_NUMBER_LENGTH = 9
@@ -25,7 +29,7 @@ class Client:
 
         self.__client_name = "Unknown"
         self.__phone_number = None
-        self.__accounts = []
+        self.__accounts = {}
         self.__preferred_branch = None
 
         self.client_name = client_name
@@ -61,8 +65,10 @@ class Client:
             print("Invalid phone number, it must be 9 digits without the 0")
 
     @property
-    def accounts(self) -> list:
-        return list(self.__accounts)
+    def accounts(self) -> dict:
+        # A copy is returned so outside code cannot add or remove
+        # accounts without going through add_account().
+        return dict(self.__accounts)
 
     @property
     def preferred_branch(self) -> Branch:
@@ -81,25 +87,36 @@ class Client:
         if not isinstance(account, Account):
             print("Only Account objects can be added")
             return False
-        if account in self.__accounts:
-            print("This account has already been added to this client")
+        if account.acc_number in self.__accounts:
+            print(f"Account {account.acc_number} is already held by "
+                  f"this client")
             return False
-        self.__accounts.append(account)
+        self.__accounts[account.acc_number] = account
         return True
 
-    def remove_account(self, account: Account) -> bool:
+    def has_account(self, acc_number: int) -> bool:
+        return acc_number in self.__accounts
+
+    def get_account(self, acc_number: int) -> Account:
+        return self.__accounts.get(acc_number)
+
+    def remove_account(self, acc_number: int) -> bool:
         # The account is only unlinked, it still exists afterwards.
-        if account not in self.__accounts:
-            print("This account is not assigned to this client")
+        if self.__accounts.pop(acc_number, None) is None:
+            print(f"Account {acc_number} is not held by this client")
             return False
-        self.__accounts.remove(account)
         return True
 
     def total_balance(self) -> float:
-        total = 0
-        for account in self.__accounts:
-            total += account.balance
-        return total
+        return sum(account.balance for account in self.__accounts.values())
+
+    def month_end(self) -> dict:
+        # Each account runs its own month_end(), so the client never
+        # checks which kind of account it is holding.
+        return {
+            acc_number: account.month_end()
+            for acc_number, account in self.__accounts.items()
+        }
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Client):
