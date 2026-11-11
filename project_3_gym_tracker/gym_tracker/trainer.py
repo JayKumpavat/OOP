@@ -1,3 +1,4 @@
+from gym_tracker.gym_exceptions import TrainerFullError
 from gym_tracker.person import Person
 
 
@@ -20,8 +21,7 @@ class Trainer(Person):
 
     def take_on_client(self) -> bool:
         if not self.has_space():
-            print(f"{self.name} is fully booked")
-            return False
+            raise TrainerFullError(self.name, self.MAX_CLIENTS)
         self.__client_count += 1
         return True
 
