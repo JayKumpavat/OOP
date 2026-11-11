@@ -1,4 +1,10 @@
 from gym_tracker.exercise import Exercise
+from gym_tracker.gym_exceptions import (
+    DuplicateExerciseError,
+    EmptyWorkoutError,
+    WorkoutCompletedError,
+    WorkoutFullError,
+)
 from gym_tracker.progressable import Progressable
 
 
@@ -28,25 +34,25 @@ class Workout:
         return self.__completed
 
     def add_exercise(self, exercise: Exercise) -> bool:
-        if self.__completed:
-            print(f"{self.__title} is finished, it cannot be changed")
-            return False
+        # Every rule is checked before the list changes, so a failed
+        # add leaves the workout exactly as it was.
         if not isinstance(exercise, Exercise):
             print("Only Exercise objects can be added to a workout")
             return False
+        if self.__completed:
+            raise WorkoutCompletedError(self.__title)
         if exercise in self.__exercises:
-            print(f"{exercise.name} is already in {self.__title}")
-            return False
+            raise DuplicateExerciseError(self.__title, exercise.name)
         if len(self.__exercises) >= self.MAX_EXERCISES:
-            print(f"{self.__title} already has the maximum exercises")
-            return False
+            raise WorkoutFullError(self.__title, self.MAX_EXERCISES)
         self.__exercises.append(exercise)
         return True
 
     def complete(self) -> bool:
-        if self.__completed or len(self.__exercises) == 0:
-            print(f"{self.__title} cannot be completed")
-            return False
+        if self.__completed:
+            raise WorkoutCompletedError(self.__title)
+        if len(self.__exercises) == 0:
+            raise EmptyWorkoutError(self.__title)
         self.__completed = True
         return True
 
