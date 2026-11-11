@@ -1,3 +1,8 @@
+from gym_tracker.gym_exceptions import (
+    GymError,
+    MemberNotFoundError,
+    TrainerNotFoundError,
+)
 from gym_tracker.member import Member
 from gym_tracker.trainer import Trainer
 
@@ -45,31 +50,42 @@ class Gym:
         return member_id in self.__members
 
     def find_member(self, member_id: int) -> Member:
-        return self.__members.get(member_id)
+        if member_id not in self.__members:
+            raise MemberNotFoundError(member_id)
+        return self.__members[member_id]
 
     def find_trainer(self, trainer_id: int) -> Trainer:
-        return self.__trainers.get(trainer_id)
+        if trainer_id not in self.__trainers:
+            raise TrainerNotFoundError(trainer_id)
+        return self.__trainers[trainer_id]
 
     def remove_member(self, member_id: int) -> bool:
-        member = self.__members.pop(member_id, None)
-        if member is None:
-            print(f"No member with id {member_id} is registered")
+        try:
+            member = self.find_member(member_id)
+        except MemberNotFoundError as error:
+            print(f"Could not remove member. {error}")
             return False
+        del self.__members[member_id]
         # The trainer's spot is freed so it can go to someone else.
         member.remove_trainer()
         return True
 
     def assign_trainer(self, member_id: int, trainer_id: int) -> bool:
-        member = self.find_member(member_id)
-        trainer = self.find_trainer(trainer_id)
-        if member is None or trainer is None:
-            print("Both the member and trainer must be registered")
+        # Any lookup or capacity problem is handled here, so the caller
+        # gets a simple True or False and the program carries on.
+        try:
+            member = self.find_member(member_id)
+            trainer = self.find_trainer(trainer_id)
+            return member.assign_trainer(trainer)
+        except GymError as error:
+            print(f"Could not assign trainer. {error}")
             return False
-        return member.assign_trainer(trainer)
 
     def members_coached_by(self, trainer_id: int) -> list:
-        trainer = self.find_trainer(trainer_id)
-        if trainer is None:
+        try:
+            trainer = self.find_trainer(trainer_id)
+        except TrainerNotFoundError as error:
+            print(error)
             return []
         return [
             member for member in self.__members.values()
