@@ -1,6 +1,14 @@
 """Tests for Workout and its collection of exercises."""
 import pytest
 
+from gym_tracker.gym_exceptions import (
+    DuplicateExerciseError,
+    EmptyWorkoutError,
+    GymError,
+    WorkoutCompletedError,
+    WorkoutError,
+    WorkoutFullError,
+)
 from gym_tracker.mobility_exercise import MobilityExercise
 from gym_tracker.strength_exercise import StrengthExercise
 from gym_tracker.workout import Workout
@@ -14,7 +22,9 @@ class TestAddingExercises:
 
     def test_duplicate_exercise_is_rejected(self, full_workout):
         copy = StrengthExercise("BENCH PRESS", 1, 1, 20)
-        assert full_workout.add_exercise(copy) is False
+        with pytest.raises(DuplicateExerciseError, match="already in") as info:
+            full_workout.add_exercise(copy)
+        assert info.value.exercise_name == "BENCH PRESS"
         assert len(full_workout.exercises) == 3
 
     def test_non_exercise_is_rejected(self, workout):
@@ -25,7 +35,8 @@ class TestAddingExercises:
         for number in range(Workout.MAX_EXERCISES):
             workout.add_exercise(MobilityExercise(f"Drill {number}", 1, 30))
         extra = MobilityExercise("One too many", 1, 30)
-        assert workout.add_exercise(extra) is False
+        with pytest.raises(WorkoutFullError, match="at most 12"):
+            workout.add_exercise(extra)
         assert len(workout.exercises) == Workout.MAX_EXERCISES
 
     def test_exercises_list_is_a_copy(self, full_workout, squat):
@@ -39,17 +50,29 @@ class TestCompleting:
         assert full_workout.completed
 
     def test_empty_workout_cannot_be_completed(self, workout):
-        assert workout.complete() is False
+        with pytest.raises(EmptyWorkoutError, match="Push Day") as info:
+            workout.complete()
+        assert info.value.workout_title == "Push Day"
         assert not workout.completed
 
     def test_workout_cannot_be_completed_twice(self, full_workout):
         full_workout.complete()
-        assert full_workout.complete() is False
+        with pytest.raises(WorkoutCompletedError):
+            full_workout.complete()
 
     def test_completed_workout_cannot_change(self, full_workout, squat):
         full_workout.complete()
-        assert full_workout.add_exercise(squat) is False
+        with pytest.raises(WorkoutCompletedError, match="cannot change"):
+            full_workout.add_exercise(squat)
         assert squat not in full_workout.exercises
+
+    def test_workout_errors_share_parents(self, full_workout):
+        full_workout.complete()
+        # Both parent classes catch the same problem.
+        with pytest.raises(WorkoutError):
+            full_workout.complete()
+        with pytest.raises(GymError):
+            full_workout.complete()
 
 
 class TestCalculations:
