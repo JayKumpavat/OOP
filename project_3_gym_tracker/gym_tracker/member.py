@@ -1,4 +1,5 @@
 from gym_tracker.exercise import Exercise
+from gym_tracker.gym_exceptions import WorkoutError
 from gym_tracker.person import Person
 from gym_tracker.trainer import Trainer
 from gym_tracker.workout import Workout
@@ -37,13 +38,35 @@ class Member(Person):
         if trainer == self.__trainer:
             print(f"{trainer.name} already coaches {self.name}")
             return False
-        if not trainer.take_on_client():
-            return False
+        # Calling take_on_client() raises TrainerFullError before
+        # anything is linked, so a full trainer leaves the member
+        # unchanged.
+        trainer.take_on_client()
         # The old trainer frees up a spot before the new one is linked.
         if self.__trainer is not None:
             self.__trainer.release_client()
         self.__trainer = trainer
         return True
+
+    def add_to_workout(self, workout: Workout, exercise: Exercise) -> bool:
+        if workout not in self.__workouts:
+            print(f"{self.name} does not own that workout")
+            return False
+        try:
+            return workout.add_exercise(exercise)
+        except WorkoutError as error:
+            print(f"Could not add exercise. {error}")
+            return False
+
+    def finish_workout(self, workout: Workout) -> bool:
+        if workout not in self.__workouts:
+            print(f"{self.name} does not own that workout")
+            return False
+        try:
+            return workout.complete()
+        except WorkoutError as error:
+            print(f"Could not finish workout. {error}")
+            return False
 
     def remove_trainer(self) -> bool:
         if self.__trainer is None:
