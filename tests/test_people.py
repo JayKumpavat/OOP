@@ -2,6 +2,7 @@
 import pytest
 
 from gym_tracker.exercise import Exercise
+from gym_tracker.gym_exceptions import TrainerFullError
 from gym_tracker.member import Member
 from gym_tracker.person import Person
 from gym_tracker.trainer import Trainer
@@ -35,7 +36,9 @@ class TestTrainer:
 
     def test_full_trainer_rejects_clients(self, full_trainer):
         assert full_trainer.has_space() is False
-        assert full_trainer.take_on_client() is False
+        with pytest.raises(TrainerFullError, match="maximum of 5") as info:
+            full_trainer.take_on_client()
+        assert info.value.trainer_name == "Ava"
         assert full_trainer.client_count == Trainer.MAX_CLIENTS
 
     def test_release_client(self, full_trainer):
@@ -66,7 +69,8 @@ class TestMemberTrainer:
         self, member, trainer, full_trainer
     ):
         member.assign_trainer(trainer)
-        assert member.assign_trainer(full_trainer) is False
+        with pytest.raises(TrainerFullError):
+            member.assign_trainer(full_trainer)
         assert member.trainer == trainer
         assert trainer.client_count == 1
 
@@ -115,3 +119,34 @@ class TestMemberWorkouts:
     ):
         assert member.muscles_trained() == set()
         assert member.untrained_muscles() == Exercise.MUSCLE_GROUPS
+
+
+class TestMemberHandlesWorkoutErrors:
+    """Member catches workout exceptions so the program can carry on."""
+
+    def test_add_to_workout(self, member, workout, squat):
+        assert member.add_to_workout(workout, squat) is True
+        assert workout.exercises == [squat]
+
+    def test_duplicate_is_handled(self, member, full_workout, bench_press):
+        assert member.add_to_workout(full_workout, bench_press) is False
+        assert len(full_workout.exercises) == 3
+
+    def test_completed_workout_is_handled(self, member, full_workout, squat):
+        member.finish_workout(full_workout)
+        assert member.add_to_workout(full_workout, squat) is False
+        assert squat not in full_workout.exercises
+
+    def test_cannot_use_another_members_workout(self, workout, squat):
+        other = Member("Sam", 102, "Improve fitness")
+        assert other.add_to_workout(workout, squat) is False
+        assert other.finish_workout(workout) is False
+        assert workout.exercises == []
+
+    def test_finish_workout(self, member, full_workout):
+        assert member.finish_workout(full_workout) is True
+        assert member.completed_workout_count() == 1
+
+    def test_finish_empty_workout_is_handled(self, member, workout):
+        assert member.finish_workout(workout) is False
+        assert member.completed_workout_count() == 0
