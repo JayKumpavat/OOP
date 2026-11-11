@@ -1,6 +1,10 @@
 """Tests for the Gym and its member and trainer dictionaries."""
 import pytest
 
+from gym_tracker.gym_exceptions import (
+    MemberNotFoundError,
+    TrainerNotFoundError,
+)
 from gym_tracker.member import Member
 from gym_tracker.trainer import Trainer
 
@@ -43,8 +47,14 @@ class TestLookups:
     def test_find_member(self, gym, member):
         assert gym.find_member(101) is member
 
-    def test_find_missing_member(self, gym):
-        assert gym.find_member(999) is None
+    def test_find_missing_member_raises(self, gym):
+        with pytest.raises(MemberNotFoundError, match="id 999") as info:
+            gym.find_member(999)
+        assert info.value.member_id == 999
+
+    def test_find_missing_trainer_raises(self, gym):
+        with pytest.raises(TrainerNotFoundError, match="id 555"):
+            gym.find_trainer(555)
 
 
 class TestTrainerAssignment:
@@ -65,6 +75,14 @@ class TestTrainerAssignment:
 
     def test_members_coached_by_unknown_trainer(self, gym):
         assert gym.members_coached_by(999) == []
+
+    def test_full_trainer_is_handled(self, gym, trainer, member):
+        for member_id in range(110, 115):
+            gym.register_member(Member(f"Guest {member_id}", member_id, ""))
+            gym.assign_trainer(member_id, 201)
+        assert gym.assign_trainer(101, 201) is False
+        assert member.trainer is None
+        assert trainer.client_count == Trainer.MAX_CLIENTS
 
 
 class TestRemovingAndTotals:
