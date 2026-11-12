@@ -3,6 +3,14 @@ import pytest
 
 from banking_system.account import Account
 from banking_system.everyday_account import EverydayAccount
+from banking_system.finance_exceptions import (
+    FinanceError,
+    InsufficientFundsError,
+    InvalidAmountError,
+    MinimumBalanceError,
+    WithdrawalError,
+    WithdrawalLimitError,
+)
 from banking_system.savings_account import SavingsAccount
 
 
@@ -39,7 +47,9 @@ class TestSharedBehaviour:
     @pytest.mark.parametrize("account", make_accounts())
     @pytest.mark.parametrize("amount", [0, -50, "100", True])
     def test_invalid_deposit_changes_nothing(self, account, amount):
-        assert account.deposit(amount) is False
+        with pytest.raises(InvalidAmountError) as info:
+            account.deposit(amount)
+        assert info.value.amount == amount
         assert account.balance == 1000
         assert account.transaction_count() == 0
 
@@ -50,14 +60,19 @@ class TestSharedBehaviour:
 
     @pytest.mark.parametrize("account", make_accounts())
     def test_invalid_withdrawal_changes_nothing(self, account):
-        assert account.withdraw(-1) is False
+        with pytest.raises(InvalidAmountError, match="-1"):
+            account.withdraw(-1)
         assert account.balance == 1000
         assert account.transaction_count() == 0
 
     def test_cannot_withdraw_more_than_balance(self):
         account = EverydayAccount(3002, 50, "1234123412341234")
-        assert account.withdraw(60) is False
+        with pytest.raises(InsufficientFundsError,
+                           match="balance is only \\$50.00") as info:
+            account.withdraw(60)
+        assert (info.value.acc_number, info.value.amount) == (3002, 60)
         assert account.balance == 50
+        assert account.transactions == []
 
     def test_accounts_are_equal_by_number(self, savings):
         assert savings == SavingsAccount(1001, 0, 0.01)
@@ -73,7 +88,10 @@ class TestSavingsAccount:
         assert savings.balance == 100
 
     def test_minimum_balance_is_enforced(self, savings):
-        assert savings.withdraw(401) is False
+        with pytest.raises(MinimumBalanceError) as info:
+            savings.withdraw(401)
+        assert info.value.minimum == 100
+        assert info.value.balance == 500
         assert savings.balance == 500
         assert savings.transactions == []
 
@@ -106,7 +124,10 @@ class TestEverydayAccount:
         assert everyday.balance == 500
 
     def test_maximum_withdrawal_is_enforced(self, everyday):
-        assert everyday.withdraw(1001) is False
+        with pytest.raises(WithdrawalLimitError,
+                           match="limit for one withdrawal") as info:
+            everyday.withdraw(1001)
+        assert info.value.limit == 1000
         assert everyday.balance == 1500
         assert everyday.transactions == []
 
@@ -130,7 +151,8 @@ class TestEverydayAccount:
 
     def test_month_end_without_funds_for_fee(self):
         account = EverydayAccount(1009, 3, "1234123412341234")
-        assert account.month_end() is False
+        with pytest.raises(InsufficientFundsError):
+            account.month_end()
         assert account.balance == 3
 
 
@@ -138,12 +160,12 @@ class TestTransactionHistory:
     def test_records_are_kept_in_order(self, everyday_with_history):
         amounts = [r.amount for r in everyday_with_history.transactions]
         assert amounts == [100, 800, 45.50, 120]
-        ids = [r.transaction_id for r in everyday_with_history.transactions]
-        assert ids == [1, 2, 3, 4]
+        labels = [str(r)[:2] for r in everyday_with_history.transactions]
+        assert labels == ["#1", "#2", "#3", "#4"]
 
     def test_records_store_resulting_balance(self, everyday_with_history):
         last = everyday_with_history.transactions[-1]
-        assert last.resulting_balance == pytest.approx(634.50)
+        assert str(last).endswith("balance after: $634.50")
 
     def test_transaction_count(self, everyday_with_history):
         assert everyday_with_history.transaction_count() == 4
@@ -170,3 +192,16 @@ class TestTransactionHistory:
 
     def test_statement_with_no_history(self, savings):
         assert savings.statement().endswith("No transactions yet")
+
+
+class TestExceptionFamily:
+    @pytest.mark.parametrize("error", [InsufficientFundsError,
+                                       MinimumBalanceError,
+                                       WithdrawalLimitError])
+    def test_withdrawal_errors_share_parents(self, error):
+        assert issubclass(error, WithdrawalError)
+        assert issubclass(error, FinanceError)
+
+    def test_invalid_amount_is_a_finance_error(self, savings):
+        with pytest.raises(FinanceError):
+            savings.deposit(0)
