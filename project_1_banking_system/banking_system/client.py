@@ -1,5 +1,9 @@
 from banking_system.account import Account
 from banking_system.branch import Branch
+from banking_system.finance_exceptions import (
+    AccountNotFoundError,
+    FinanceError,
+)
 
 
 class Client:
@@ -98,14 +102,40 @@ class Client:
         return acc_number in self.__accounts
 
     def get_account(self, acc_number: int) -> Account:
-        return self.__accounts.get(acc_number)
+        if acc_number not in self.__accounts:
+            raise AccountNotFoundError(self.__client_id, acc_number)
+        return self.__accounts[acc_number]
 
     def remove_account(self, acc_number: int) -> bool:
         # The account is only unlinked, it still exists afterwards.
-        if self.__accounts.pop(acc_number, None) is None:
-            print(f"Account {acc_number} is not held by this client")
+        try:
+            self.get_account(acc_number)
+        except AccountNotFoundError as error:
+            print(f"Could not remove account. {error}")
             return False
+        del self.__accounts[acc_number]
         return True
+
+    def deposit_to(
+        self, acc_number: int, amount: float, description: str = "Deposit"
+    ) -> bool:
+        try:
+            return self.get_account(acc_number).deposit(amount, description)
+        except FinanceError as error:
+            print(f"Deposit refused. {error}")
+            return False
+
+    def withdraw_from(
+        self, acc_number: int, amount: float,
+        description: str = "Withdrawal"
+    ) -> bool:
+        # Each account type raises its own WithdrawalError, and they
+        # are all handled here so the program can carry on.
+        try:
+            return self.get_account(acc_number).withdraw(amount, description)
+        except FinanceError as error:
+            print(f"Withdrawal refused. {error}")
+            return False
 
     def total_balance(self) -> float:
         return sum(account.balance for account in self.__accounts.values())
@@ -113,15 +143,14 @@ class Client:
     def month_end(self) -> dict:
         # Each account runs its own month_end(), so the client never
         # checks which kind of account it is holding.
-        return {
-            acc_number: account.month_end()
-            for acc_number, account in self.__accounts.items()
-        }
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Client):
-            return False
-        return self.__client_id == other.client_id
+        results = {}
+        for acc_number, account in self.__accounts.items():
+            try:
+                results[acc_number] = account.month_end()
+            except FinanceError as error:
+                print(f"Month end skipped. {error}")
+                results[acc_number] = False
+        return results
 
     def __str__(self) -> str:
         return (
