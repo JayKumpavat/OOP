@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 
+from banking_system.finance_exceptions import (
+    InsufficientFundsError,
+    InvalidAmountError,
+)
 from banking_system.transaction import Transaction
 
 
@@ -79,9 +83,10 @@ class Account(ABC):
         pass
 
     def deposit(self, amount: float, description: str = "Deposit") -> bool:
+        # Rules are checked before the balance changes, so a refused
+        # deposit leaves the balance and history untouched.
         if not self._is_valid_amount(amount) or amount == 0:
-            print("Deposit denied, the amount must be a positive number")
-            return False
+            raise InvalidAmountError(amount)
 
         self._balance += amount
         self.__record_transaction("Deposit", amount, description)
@@ -89,12 +94,11 @@ class Account(ABC):
 
     def withdraw(self, amount: float, description: str = "Withdrawal") -> bool:
         if not self._is_valid_amount(amount) or amount == 0:
-            print("Withdrawal denied, the amount must be a positive number")
-            return False
+            raise InvalidAmountError(amount)
 
         if amount > self._balance:
-            print("Withdrawal denied, insufficient balance")
-            return False
+            raise InsufficientFundsError(self.__acc_number, amount,
+                                         self._balance)
 
         self._balance -= amount
         self.__record_transaction("Withdrawal", amount, description)
