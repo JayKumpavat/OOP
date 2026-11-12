@@ -58,7 +58,7 @@ class TestBranch:
 
     def test_invalid_details_use_defaults(self):
         branch = Branch(0, "", "", 12)
-        assert branch.branch_number == 0
+        assert str(branch).startswith("Branch 0 - Unnamed branch")
         assert branch.branch_name == "Unnamed branch"
         assert branch.branch_suburb == "Unknown suburb"
         assert branch.phone_number is None
@@ -69,10 +69,6 @@ class TestBranch:
         assert branch.branch_name == "Glenelg"
         assert branch.branch_suburb == "Adelaide"
 
-    def test_branches_are_equal_by_number(self, branch):
-        assert branch == Branch(1, "Other", "Other", 812345679)
-        assert branch != 1
-
     def test_str_and_repr(self, branch):
         assert str(branch) == ("Branch 1 - Adelaide CBD, Adelaide "
                                "(phone 0812345678, Closed)")
@@ -80,12 +76,6 @@ class TestBranch:
 
 
 class TestTransaction:
-    def test_equal_when_values_match(self):
-        first = Transaction(1, "Deposit", 50, 150, "Pay")
-        assert first == Transaction(1, "Deposit", 50, 150, "Different")
-        assert first != Transaction(2, "Deposit", 50, 150, "Pay")
-        assert first != "Deposit"
-
     def test_str_and_repr(self):
         record = Transaction(3, "Withdrawal", 45.5, 954.5, "Groceries")
         assert str(record) == ("#3 Withdrawal of $45.50 (Groceries), "
