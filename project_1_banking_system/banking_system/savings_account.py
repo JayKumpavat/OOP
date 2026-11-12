@@ -1,4 +1,5 @@
 from banking_system.account import Account
+from banking_system.finance_exceptions import MinimumBalanceError
 
 
 class SavingsAccount(Account):
@@ -29,17 +30,19 @@ class SavingsAccount(Account):
     def withdraw(self, amount: float, description: str = "Withdrawal") -> bool:
         # The savings rule is checked first, then the parent finishes
         # the common validation, balance change and transaction record.
-        if self._is_valid_amount(amount):
-            if self._balance - amount < self.MINIMUM_BALANCE:
-                print(
-                    f"Withdrawal denied, savings accounts must keep at "
-                    f"least ${self.MINIMUM_BALANCE}"
-                )
-                return False
+        if (
+            self._is_valid_amount(amount)
+            and self._balance - amount < self.MINIMUM_BALANCE
+        ):
+            raise MinimumBalanceError(self.acc_number, amount,
+                                      self._balance, self.MINIMUM_BALANCE)
         return super().withdraw(amount, description)
 
     def apply_interest(self) -> bool:
         interest = round(self._balance * self.__interest_rate, 2)
+        # No interest to pay is a normal result, not an error.
+        if interest <= 0:
+            return False
         return self.deposit(
             interest, f"Interest at {self.__interest_rate * 100:.1f}%"
         )
