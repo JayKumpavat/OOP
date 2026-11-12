@@ -1,4 +1,5 @@
 from banking_system.account import Account
+from banking_system.finance_exceptions import FinanceError
 
 
 class Transfer:
@@ -35,10 +36,14 @@ class Transfer:
             self.__status = "Failed"
             return False
 
-        withdrawn = self.__source.withdraw(
-            self.__amount, f"Transfer to {self.__destination.acc_number}"
-        )
-        if not withdrawn:
+        # The source applies its own withdrawal rules. If it refuses,
+        # nothing has moved yet, so the destination is never touched.
+        try:
+            self.__source.withdraw(
+                self.__amount, f"Transfer to {self.__destination.acc_number}"
+            )
+        except FinanceError as error:
+            print(f"Transfer failed. {error}")
             self.__status = "Failed"
             return False
 
