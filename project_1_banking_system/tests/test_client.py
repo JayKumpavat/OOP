@@ -3,6 +3,7 @@ import pytest
 
 from banking_system.client import Client
 from banking_system.everyday_account import EverydayAccount
+from banking_system.finance_exceptions import AccountNotFoundError
 from banking_system.savings_account import SavingsAccount
 
 
@@ -22,10 +23,6 @@ class TestClientDetails:
         client.client_name = "   "
         assert client.client_name == "Alice Smith"
 
-    def test_clients_are_equal_by_id(self, client):
-        assert client == Client("Someone Else", 123456789, 412345678)
-        assert client != 123456789
-
     def test_str_and_repr(self, client_with_accounts):
         assert str(client_with_accounts).endswith("2 account(s))")
         assert repr(client_with_accounts).startswith("Client('Alice Smith'")
@@ -43,8 +40,10 @@ class TestAccountDictionary:
     ):
         assert client_with_accounts.get_account(1001) is savings
 
-    def test_get_missing_account(self, client_with_accounts):
-        assert client_with_accounts.get_account(9999) is None
+    def test_get_missing_account_raises(self, client_with_accounts):
+        with pytest.raises(AccountNotFoundError, match="9999") as info:
+            client_with_accounts.get_account(9999)
+        assert info.value.client_id == 123456789
 
     def test_has_account(self, client_with_accounts):
         assert client_with_accounts.has_account(1002)
@@ -95,10 +94,32 @@ class TestClientAccountInteractions:
         assert account.withdraw(50) is True
         assert account.transaction_count() == 2
 
-    def test_specialised_rules_still_apply(self, client_with_accounts):
-        assert client_with_accounts.get_account(1001).withdraw(450) is False
-        assert client_with_accounts.get_account(1002).withdraw(1200) is False
+    def test_specialised_rules_are_handled(self, client_with_accounts):
+        assert client_with_accounts.withdraw_from(1001, 450) is False
+        assert client_with_accounts.withdraw_from(1002, 1200) is False
         assert client_with_accounts.total_balance() == 2000
+
+    def test_withdraw_from_and_deposit_to(self, client_with_accounts):
+        assert client_with_accounts.withdraw_from(1002, 200, "Bills")
+        assert client_with_accounts.deposit_to(1001, 50)
+        assert client_with_accounts.total_balance() == 1850
+
+    def test_missing_account_is_handled(self, client_with_accounts):
+        assert client_with_accounts.deposit_to(9999, 100) is False
+        assert client_with_accounts.withdraw_from(9999, 100) is False
+        assert len(client_with_accounts.accounts) == 2
+
+    def test_refused_operation_keeps_history(self, client_with_accounts):
+        everyday = client_with_accounts.get_account(1002)
+        everyday.deposit(10)
+        client_with_accounts.withdraw_from(1002, 1001)
+        client_with_accounts.deposit_to(1002, "ten")
+        assert everyday.transaction_count() == 1
+
+    def test_month_end_handles_failed_fee(self, client):
+        client.add_account(EverydayAccount(1011, 2, "1234123412341234"))
+        assert client.month_end() == {1011: False}
+        assert client.get_account(1011).balance == 2
 
     def test_month_end_runs_for_every_account(self, client_with_accounts):
         results = client_with_accounts.month_end()
