@@ -1,4 +1,6 @@
 from banking_system.account import Account
+from banking_system.finance_exceptions import WithdrawalLimitError
+
 
 class EverydayAccount(Account):
     """A transaction account with a linked debit card and a limit on
@@ -35,11 +37,8 @@ class EverydayAccount(Account):
 
     def withdraw(self, amount: float, description: str = "Withdrawal") -> bool:
         if self._is_valid_amount(amount) and amount > self.MAXIMUM_WITHDRAWAL:
-            print(
-                f"Withdrawal denied, everyday accounts can only withdraw "
-                f"up to ${self.MAXIMUM_WITHDRAWAL} at a time"
-            )
-            return False
+            raise WithdrawalLimitError(self.acc_number, amount,
+                                       self.MAXIMUM_WITHDRAWAL)
         return super().withdraw(amount, description)
 
     def month_end(self) -> bool:
