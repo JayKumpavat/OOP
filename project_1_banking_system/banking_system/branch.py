@@ -31,10 +31,6 @@ class Branch:
         self.phone_number = branch_phone_number
 
     @property
-    def branch_number(self) -> int:
-        return self.__branch_number
-
-    @property
     def branch_name(self) -> str:
         return self.__branch_name
 
@@ -94,11 +90,6 @@ class Branch:
             return False
         self.__feedback.append(comment)
         return True
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Branch):
-            return False
-        return self.__branch_number == other.branch_number
 
     def __str__(self) -> str:
         return (
