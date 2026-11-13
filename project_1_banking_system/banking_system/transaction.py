@@ -3,7 +3,8 @@ class Transaction:
 
     Transaction objects are created and owned by an Account
     (composition). Once a record is created it cannot be changed, so
-    every attribute is private and exposed through read-only properties.
+    every attribute is private. Only the type and amount have read-only
+    properties, because the account filters its history by them.
     """
 
     def __init__(
@@ -21,31 +22,12 @@ class Transaction:
         self.__description = description
 
     @property
-    def transaction_id(self) -> int:
-        return self.__transaction_id
-
-    @property
     def transaction_type(self) -> str:
         return self.__transaction_type
 
     @property
     def amount(self) -> float:
         return self.__amount
-
-    @property
-    def resulting_balance(self) -> float:
-        return self.__resulting_balance
-
-    def __eq__(self, other) -> bool:
-        # Two records are the same if every stored value matches.
-        if not isinstance(other, Transaction):
-            return False
-        return (
-            self.__transaction_id == other.transaction_id
-            and self.__transaction_type == other.transaction_type
-            and self.__amount == other.amount
-            and self.__resulting_balance == other.resulting_balance
-        )
 
     def __str__(self) -> str:
         return (
