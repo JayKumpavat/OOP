@@ -358,5 +358,58 @@ Unit testing is about behavior, not about getters. Getting rid of unused code
 **What I learned**
 I have been adding a getter for every private attribute "just in case", but writing the tests showed me which ones actually mattered. Because the tests check the real results like describe and calcualte and not just the raw values.
 
-**
+** Week 11: Workshop 10-1 (Topic 10)
 
+**What got reviewed**
+Gym's find_member and assign_trainer methods 
+
+**My question**
+If find_member raises an exception for an id that doesn't exist, where should I catch it? The workshop saus not to do it in main.py
+
+**Feedback and discussion**
+- Raise where the rule is enforece
+- catch in the class that coordinates the operation
+- Raise before changing any state and use a shared parent to catch related errors together
+
+**Code change**
+ 
+Before (Workshop 9-1)
+ 
+```python
+def find_member(self, member_id: int) -> Member:
+    return self.__members.get(member_id)
+ 
+def assign_trainer(self, member_id: int, trainer_id: int) -> bool:
+    member = self.find_member(member_id)
+    trainer = self.find_trainer(trainer_id)
+    if member is None or trainer is None:
+        print("Both the member and trainer must be registered")
+        return False
+    return member.assign_trainer(trainer)
+```
+ 
+After (Workshop 10-1)
+ 
+```python
+def find_member(self, member_id: int) -> Member:
+    if member_id not in self.__members:
+        raise MemberNotFoundError(member_id)
+    return self.__members[member_id]
+ 
+def assign_trainer(self, member_id: int, trainer_id: int) -> bool:
+    try:
+        member = self.find_member(member_id)
+        trainer = self.find_trainer(trainer_id)
+        return member.assign_trainer(trainer)
+    except GymError as error:
+        print(f"Could not assign trainer. {error}")
+        return False
+```
+
+Now the find_member and find_trainer raises a custom exception that says which id was missing, instead of just returning None. The assign_trainer catches GymError which also covers TrainerFullError from the take_on_client. This way the demo keeps running without needing any try blocks in main.py
+
+**Concept**
+Exception handling, raising custom exceptions, catching them in the class thats responsible for the operation and then using an exception hierarchy so a while group of related errors are handled together
+
+**What I learned**
+Returning None meant every bit of code calling it had to remember to check for None, and the message couldn't even tell you which id was wrong. Raising an exception means the problem can't just slip by, and catching it in Gym keeps main.py nice and simple.
