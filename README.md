@@ -1,8 +1,4 @@
 # Code Reviews
-No code review was conducted in week 1 as it was not required
-No code reivew in extention week (week 4)
-
-Forgot tutors name (pretty sure it was Lance but not 100%) who conducted code review with me but he marked me of on his laptop so I believe I have completed it for week 2 and 3.
 
 git repo:
 https://github.com/JayKumpavat/OOP.git
