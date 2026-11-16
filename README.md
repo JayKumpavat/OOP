@@ -3,6 +3,8 @@
 git repo:
 https://github.com/JayKumpavat/OOP.git
 
+## ** All uml diagrams are located in UML-diagrams folder ** 
+
 ## **Week 2**
 Feedback:
 - make separate class for transferring money from different amounts
