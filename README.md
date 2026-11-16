@@ -29,6 +29,12 @@ during the discussion/ code review, my tutor explained why account should only h
 
 ![alt text](image/image-3.png)
 
+**Related commits:**
+- [`a367102`](https://github.com/JayKumpavat/OOP/commit/a367102) Moved withdraw and deposit out of Account into Transactions
+- [`9215b40`](https://github.com/JayKumpavat/OOP/commit/9215b40) Moved deposit, withdraw and view balance to a new module
+- [`e35d1cd`](https://github.com/JayKumpavat/OOP/commit/e35d1cd) Applied autopep8 to all modules
+- [`0240784`](https://github.com/JayKumpavat/OOP/commit/0240784) PEP8 formatting applied to Accounts
+
 **Justification**
 For the following changes, I implemented pep8 formatting through the use of the extention for python that does it for you. This improved the readability of my code. I have also moved the transfer funciton to its own class. This follows SOLIDS principles and I can now see how it has made it easier for me to review the code and also makes testing easier now that it is isolated and not apart of another system.
 
@@ -66,6 +72,14 @@ I was confused at first between str and repr since they both seemed to output th
 
 
 *note the following images provided in the code review files, I have only taken for account and client. The rest of the changes applied to all othe r classes can be found in the git commit section.
+
+**Related commits:**
+- [`9bfba21`](https://github.com/JayKumpavat/OOP/commit/9bfba21) Added __str__ and __repr__ to Accounts
+- [`06e6aa5`](https://github.com/JayKumpavat/OOP/commit/06e6aa5) Added __str__ and __repr__ to Client and Branch
+- [`c47849d`](https://github.com/JayKumpavat/OOP/commit/c47849d) Added __str__ and __repr__ to Transactions
+- [`a1a8e1f`](https://github.com/JayKumpavat/OOP/commit/a1a8e1f) Made client_id and client_no private
+- [`bb45d6c`](https://github.com/JayKumpavat/OOP/commit/bb45d6c) Made acc_number private
+- [`28d7736`](https://github.com/JayKumpavat/OOP/commit/28d7736) Made all Branch attributes private
 
 **Justification**
 I have added str and repr to all the classes. This really helped me out during the testing phase as after each change I made from the main.py file, I could call repr to show what the current states of the values were and if they matched with the correct output. This also helped me debug. Also by privating most of the attributes, my code is now more safe/ it cannot be view from outside the class or modified out it. 
@@ -110,14 +124,12 @@ def __str__(self) -> str:
         f"with a balance of ${self.__balance:.2f}"
     )
 ```
-**Related commits:**
-**Related commits:**
-- [`a367102`](https://github.com/JayKumpavat/OOP/commit/a367102) Moved withdraw and deposit out of Account into Transactions
-- [`9215b40`](https://github.com/JayKumpavat/OOP/commit/9215b40) Moved deposit, withdraw and view balance to a new module
-- [`e35d1cd`](https://github.com/JayKumpavat/OOP/commit/e35d1cd) Applied autopep8 to all modules
-- [`0240784`](https://github.com/JayKumpavat/OOP/commit/0240784) PEP8 formatting applied to Accounts
-
 Every str and repr in Project 1 now returns a string instead of printing. I swapped my getters for read-only properties, so now it's just account.acc_number. I also got rid of set_balance completely, so the only way a balance can change is through deposit and withdraw.
+
+**Related commits:**
+- [`08e3ba4`](https://github.com/JayKumpavat/OOP/commit/08e3ba4) Account getters replaced with @property and __str__ no longer prints
+- [`7323532`](https://github.com/JayKumpavat/OOP/commit/7323532) Client updated the same way
+- [`b2e8d50`](https://github.com/JayKumpavat/OOP/commit/b2e8d50) Branch updated the same way
  
 **Concept:** Special methods come with rules, and str has to return a string. Properties are Python's way of letting outside code read private attributes while the class still controls access (encapsulation).
  
@@ -160,6 +172,11 @@ SummoningRitual("Rite of Bones", SkeletonWarrior,
 ```
 
 The ritual now just stores which class it creates. The name, starting starts and the stat limits all moved into each subclass as constants.
+
+**Related commits:**
+- [`d321e08`](https://github.com/JayKumpavat/OOP/commit/d321e08) SummoningRitual stores the summon class instead of a name and stats
+- [`9bf3407`](https://github.com/JayKumpavat/OOP/commit/9bf3407) SkeletonWarrior holds its own stats as constants
+- [`7637a1a`](https://github.com/JayKumpavat/OOP/commit/7637a1a) Undead refactored as the parent class
 
 **Concept**
 Interitance and responsibility, where a subclass only holds what makes it different. Polymorphism too, since the Necromance just gets an undead back and never has to check the type it has.
@@ -209,6 +226,10 @@ return True
 
 Transfers now have their own class, and it never accesses a balance directly. This is because now it has to go through withdraw, a transfer out of a saving accounts means it automatically adhere's to the $100 minimum, and both accounts get transfer added to their history.
 
+**Related commits:**
+- [`4159e9a`](https://github.com/JayKumpavat/OOP/commit/4159e9a) Removed transfering() from Transactions so it only records transactions
+- [`6879e49`](https://github.com/JayKumpavat/OOP/commit/6879e49) Added transfer.py
+
 **Concept:**
 SOLID Principle, Single Responsibility, encapsulation and polymorphism. Withdraw works differently for each account type and Transfer doesn't need to know which type its dealing with.
 
@@ -247,6 +268,11 @@ class Necromancer:
 
 ```
 I deleted the unfinished file with the typo, so the complete Necromancer in necromancy_game/necromancer.py is the only one left. I also renamed the package folder to necromancy_game to follow PEP8 and ran the whole project through autopep8 and pycodestyle.
+
+**Related commits:**
+- [`6875e04`](https://github.com/JayKumpavat/OOP/commit/6875e04) New Necromancer constructor (__init__)
+- [`d03948e`](https://github.com/JayKumpavat/OOP/commit/d03948e) Renamed the package to necromancy_game for PEP8
+- [`272eb78`](https://github.com/JayKumpavat/OOP/commit/272eb78) PEP8 formatting on ResourcePool
 
 **Concept**
 Constructors, cleaning out dead code
@@ -312,6 +338,10 @@ def remove_account(self, acc_number: int) -> bool:
 
 Accounts are now stored in a dictionary using the account number as the key. This way, I am able to look up an account straight away with get_account or has_account, and remove_account just neds the number now instead of the whole object. 
 
+**Related commits:**
+- [`258223d`](https://github.com/JayKumpavat/OOP/commit/258223d) Client accounts changed from a list to a dictionary keyed by account number
+- [`001031d`](https://github.com/JayKumpavat/OOP/commit/001031d) Tests for Client and its account dictionary
+
 **Concept**
 Picking a data structure based on how you actually use the data: a dictionary for looking things up by key, a list for history where order matters. Also keeping a collection private by only returning a copy.
 
@@ -354,6 +384,10 @@ def test_str_lists_exercises_and_total(self, full_workout):
 ```
 
 I went through the project 3 and removed every getter that nothing was reading such as workout's title and date, exercise sets and member goal, trainer speciality and gym name. I kept the Member.workouts and trainer.client_count because ther demo tests and uses them.
+
+**Related commits:**
+- [`377f4ae`](https://github.com/JayKumpavat/OOP/commit/377f4ae) Removed unused getters from workout.py
+- [`9edb8b9`](https://github.com/JayKumpavat/OOP/commit/9edb8b9) to [`bfffedc`](https://github.com/JayKumpavat/OOP/commit/bfffedc) Same change across the other gym classes
 
 **Concept**
 Unit testing is about behavior, not about getters. Getting rid of unused code
@@ -410,6 +444,12 @@ def assign_trainer(self, member_id: int, trainer_id: int) -> bool:
 ```
 
 Now the find_member and find_trainer raises a custom exception that says which id was missing, instead of just returning None. The assign_trainer catches GymError which also covers TrainerFullError from the take_on_client. This way the demo keeps running without needing any try blocks in main.py
+
+**Related commits:**
+- [`6a45a11`](https://github.com/JayKumpavat/OOP/commit/6a45a11) Added custom gym exceptions
+- [`49dd753`](https://github.com/JayKumpavat/OOP/commit/49dd753) find_member raises, Gym catches
+- [`3692504`](https://github.com/JayKumpavat/OOP/commit/3692504) Member catches workout exceptions
+- [`748dbc4`](https://github.com/JayKumpavat/OOP/commit/748dbc4) Tests for gym lookup exceptions
 
 **Concept**
 Exception handling, raising custom exceptions, catching them in the class thats responsible for the operation and then using an exception hierarchy so a while group of related errors are handled together
