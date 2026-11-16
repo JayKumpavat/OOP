@@ -116,7 +116,7 @@ Every str and repr in Project 1 now returns a string instead of printing. I swap
  
 **What I learned:** It turns out printing inside str only seemed to work because I was calling the method directly. When Python called it through print, it got None back and threw an error. Properties are a nice middle ground, since the class decides what can be read or changed but the code using it still looks normal.
 
-**Week 6: Workshop 5-2 (Topic 5)
+## **Week 6: Workshop 5-2 (Topic 5)**
 
 **What got reviewd**
 SummoningRitual's create_summon method, after I added the undead subclass
@@ -160,7 +160,7 @@ Interitance and responsibility, where a subclass only holds what makes it differ
 **What I learned**
 I didn't realise that you could pass a class around and store it like any other value. Moving the stats into the subclasses meant that the level_up could stay in undead and still be used in each subclass's own limits through self which ws very cool.
 
-*** Week 7: Workshop 6-2 (Checkpoint feedback) ***
+## ** Week 7: Workshop 6-2 (Checkpoint feedback) **
 
 **What got reviewed:** My new Transfer class compared to my older transfer method i was using
 
@@ -208,7 +208,7 @@ SOLID Principle, Single Responsibility, encapsulation and polymorphism. Withdraw
 **What I learned:**
 Before this there were three different places in my code that could change the balance. If I added a rule to Account, it could easily be overlooked. Getting the account to do the work itself keeps the verification/ rules in one place. 
 
-** Week 8: Workshop 7 (Finalising Project 2)
+## **Week 8: Workshop 7 (Finalising Project 2)**
 
 **What got reviewed**
 My original necromancy game
@@ -247,7 +247,7 @@ Constructors, cleaning out dead code
 **What I learned**
 The spelling error made me realise that python doesn't give you an error. It instead makes the normal method with that name. The only way I found out was by running the demo and the object values never got set.
 
-***Week 9: Workshop 8-2 (Topic 8) ***
+## **Week 9: Workshop 8-2 (Topic 8)**
 
 **what got reviewed**
 How client stores its accounts
@@ -311,7 +311,7 @@ Picking a data structure based on how you actually use the data: a dictionary fo
 **What I learned**
 With the list, finding account 1002 meant going through every account one by one, removing one meant I needed the actual object but now the dictionary lines up with how real bank works so i now only need thier number.
 
-***Week 10: Workshop 9-1 Topic 9***
+## **Week 10: Workshop 9-1 Topic 9**
 
 **What got reviewed**
 The getters in gym_tracker/workout.py while i was planning my tests
@@ -354,7 +354,7 @@ Unit testing is about behavior, not about getters. Getting rid of unused code
 **What I learned**
 I have been adding a getter for every private attribute "just in case", but writing the tests showed me which ones actually mattered. Because the tests check the real results like describe and calcualte and not just the raw values.
 
-** Week 11: Workshop 10-1 (Topic 10)
+## **Week 11: Workshop 10-1 (Topic 10)**
 
 **What got reviewed**
 Gym's find_member and assign_trainer methods 
