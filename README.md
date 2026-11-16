@@ -110,6 +110,13 @@ def __str__(self) -> str:
         f"with a balance of ${self.__balance:.2f}"
     )
 ```
+**Related commits:**
+**Related commits:**
+- [`a367102`](https://github.com/JayKumpavat/OOP/commit/a367102) Moved withdraw and deposit out of Account into Transactions
+- [`9215b40`](https://github.com/JayKumpavat/OOP/commit/9215b40) Moved deposit, withdraw and view balance to a new module
+- [`e35d1cd`](https://github.com/JayKumpavat/OOP/commit/e35d1cd) Applied autopep8 to all modules
+- [`0240784`](https://github.com/JayKumpavat/OOP/commit/0240784) PEP8 formatting applied to Accounts
+
 Every str and repr in Project 1 now returns a string instead of printing. I swapped my getters for read-only properties, so now it's just account.acc_number. I also got rid of set_balance completely, so the only way a balance can change is through deposit and withdraw.
  
 **Concept:** Special methods come with rules, and str has to return a string. Properties are Python's way of letting outside code read private attributes while the class still controls access (encapsulation).
