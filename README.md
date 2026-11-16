@@ -17,17 +17,17 @@ during the discussion/ code review, my tutor explained why account should only h
 
 **transfer in same as account and no pep8 formatting**
 
-![alt text](image.png)
+![alt text](image/image.png)
 
-![alt text](image-1.png)
+![alt text](image/image-1.png)
 
 *After*
 
 **pep8 formatting and moved transfer**
 
-![alt text](image-2.png)
+![alt text](image/image-2.png)
 
-![alt text](image-3.png)
+![alt text](image/image-3.png)
 
 **Justification**
 For the following changes, I implemented pep8 formatting through the use of the extention for python that does it for you. This improved the readability of my code. I have also moved the transfer funciton to its own class. This follows SOLIDS principles and I can now see how it has made it easier for me to review the code and also makes testing easier now that it is isolated and not apart of another system.
@@ -46,23 +46,23 @@ I was confused at first between str and repr since they both seemed to output th
 *Before*
 **No Private Class**
 
-![alt text](image-4.png)
+![alt text](image/image-4.png)
 
-![alt text](image-5.png)
+![alt text](image/image-5.png)
 
 *After*
 
 **Updating to private class**
 
-![alt text](image-6.png)
+![alt text](image/image-6.png)
 
-![alt text](image-7.png)
+![alt text](image/image-7.png)
 
 **Adding Repr and Str**
 
-![alt text](image-8.png)
+![alt text](image/image-8.png)
 
-![alt text](image-9.png)
+![alt text](image/image-9.png)
 
 
 *note the following images provided in the code review files, I have only taken for account and client. The rest of the changes applied to all othe r classes can be found in the git commit section.
