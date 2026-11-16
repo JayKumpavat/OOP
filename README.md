@@ -125,7 +125,7 @@ SummoningRitual's create_summon method, after I added the undead subclass
 Now that every summon has its own class, should the ritual still store the summons name and starting stats or should that live in the subclass?
 
 **Feedback and discussion** 
-Data should live with the class that it describes therefore storing the class lets the ritual create the right type. In this case the necromancer doesn't need to change.
+Data should live with the class that it describes therefore storing the class lets the ritual create the right type. In this case the necromancer doesn't need to change. 
 
 **Code change**
  
