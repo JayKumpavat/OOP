@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Person(ABC):
     """Common details for anyone registered at the gym.
 

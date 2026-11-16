@@ -2,6 +2,7 @@ from necromancy_game.resource_pool import ResourcePool
 from necromancy_game.summoning_ritual import SummoningRitual
 from necromancy_game.undead import Undead
 
+
 class Necromancer:
     """Coordinates resources, rituals and the controlled undead army.
 

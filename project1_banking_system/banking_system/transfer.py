@@ -15,7 +15,7 @@ class Transfer:
     ) -> None:
         self.__source = source
         self.__destination = destination
-        self.__amount = amount
+        self.__amount = amountß
         self.__status = "Pending"
 
     def execute(self) -> bool:

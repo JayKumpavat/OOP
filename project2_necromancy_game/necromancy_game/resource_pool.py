@@ -9,12 +9,12 @@ class ResourcePool:
 
     def __init__(
         self,
-        necrotic_runes: int = 0, 
-        spirit_runes: int = 0, 
-        bone_runes: int = 0, 
-        flesh_runes: int = 0, 
+        necrotic_runes: int = 0,
+        spirit_runes: int = 0,
+        bone_runes: int = 0,
+        flesh_runes: int = 0,
         ectoplasm: int = 0
-        ) -> None:
+    ) -> None:
 
         self.__necrotic_runes = self.MINIMUM_QUANTITY
         self.__spirit_runes = self.MINIMUM_QUANTITY
@@ -22,7 +22,7 @@ class ResourcePool:
         self.__flesh_runes = self.MINIMUM_QUANTITY
         self.__ectoplasm = self.MINIMUM_QUANTITY
 
-        #Starting values go through collect() so they are validated the
+        # Starting values go through collect() so they are validated the
         # same way as every later change.
         if not self.collect(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             print("The resource pool will start empty")
@@ -48,13 +48,13 @@ class ResourcePool:
         return self.__ectoplasm
 
     def collect(
-        self, 
-        necrotic_runes: int = 0, 
-        spirit_runes: int = 0, 
-        bone_runes: int = 0, 
-        flesh_runes: int = 0, 
+        self,
+        necrotic_runes: int = 0,
+        spirit_runes: int = 0,
+        bone_runes: int = 0,
+        flesh_runes: int = 0,
         ectoplasm: int = 0
-        ) -> bool:
+    ) -> bool:
 
         if not self.__all_valid(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             print("Collection rejected, quantities must be a whole numbers 0+")
@@ -68,14 +68,14 @@ class ResourcePool:
         return True
 
     def has_resources(
-        self, 
-        necrotic_runes: int = 0, 
-        spirit_runes: int = 0, 
-        bone_runes: int = 0, 
-        flesh_runes: int = 0, 
+        self,
+        necrotic_runes: int = 0,
+        spirit_runes: int = 0,
+        bone_runes: int = 0,
+        flesh_runes: int = 0,
         ectoplasm: int = 0
-        ) -> bool:
-        
+    ) -> bool:
+
         if not self.__all_valid(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             return False
 
@@ -91,7 +91,7 @@ class ResourcePool:
         # Every requirement is checked first so nothing is spent unless te whole cost can be paid.
         if not self.has_resources(necrotic_runes, spirit_runes, bone_runes, flesh_runes, ectoplasm):
             return False
-        
+
         self.__necrotic_runes -= necrotic_runes
         self.__spirit_runes -= spirit_runes
         self.__bone_runes -= bone_runes
